@@ -209,7 +209,13 @@ app/
 components/
   navbar.tsx           — Site navigation
   footer.tsx           — Site footer
-  sections/            — Full-page sections (hero, about, skills, projects, contact)
+  sections/            — Full-page sections
+    hero.tsx           — Landing hero with animated orbs, social links, CTA
+    about.tsx          — Profile photo, stats grid, bio, interest tags
+    experience.tsx     — Vertical timeline of work history + education card
+    skills.tsx         — Technical toolkit grouped by category
+    projects.tsx       — Project cards with images, tech badges, award badges
+    contact.tsx        — Email CTA and social link grid
   ui/                  — ShadCN-generated primitives (do not edit manually)
 
 data/
@@ -220,7 +226,7 @@ lib/
   utils.ts             — cn() utility from clsx + tailwind-merge
 
 types/                 — TypeScript declarations
-public/                — Static assets
+public/                — Static assets (profile photo, project screenshots)
 ```
 
 ---
@@ -233,7 +239,35 @@ public/                — Static assets
 
 ---
 
-## 8. Changelog Maintenance
+## 8. Adding a Project
+
+Projects live in the `PROJECTS` constant at the top of `components/sections/projects.tsx`.
+
+### `Project` interface
+
+```typescript
+interface Project {
+  title: string; // "Name — Subtitle" format
+  description: string; // 2–3 sentences: what it does, key features
+  tech: string[]; // Tech stack badges, most prominent first
+  image?: string; // Path relative to /public (e.g. "/MyProject.png")
+  github?: string; // Omit if repo is private or NDA
+  demo?: string; // Omit if no live URL
+  featured?: boolean; // Show "Featured" star badge — use sparingly
+  award?: string; // e.g. "1st Place — NUS CS3247 STePS 2020"
+}
+```
+
+### Conventions
+
+- **Ordering** — newest / most significant projects first in the array
+- **Images** — place the screenshot in `public/` using `PascalCase.png` or `kebab-case.png`; reference it as `"/filename.ext"`. Use `next/image` with `fill` + `object-cover` (already wired up in the card)
+- **NDA projects** — omit `github` and `demo`; the description can note "details under NDA"
+- **Always bump the version** after adding or meaningfully updating a project (counts as `added` / `changed`)
+
+---
+
+## 9. Changelog Maintenance
 
 When releasing a new version:
 
@@ -253,14 +287,14 @@ Use the `ChangelogVersion` type from `data/changelog.ts` for type safety. Group 
 
 ---
 
-## 9. "Bump the Version" Workflow
+## 10. "Bump the Version" Workflow
 
 When the user says **"bump the version"** (or any equivalent like "release", "cut a release", "publish a new version"), Copilot must execute the following steps autonomously — do not ask for confirmation unless a decision is genuinely ambiguous.
 
 ### Step 1 — Collate all changes since the last release
 
-1. Run `git log <last-tag>..HEAD --oneline` (or `git log --oneline` if no tags exist) to list every commit since the previous release.
-2. Cross-reference the commits with any unstaged/staged file changes visible in the working tree.
+1. Run `git log --oneline` to list commits since the previous release.
+2. **Also include any changes made in the current turn** (files edited before the bump request was issued) — these may not be committed yet but are still part of the release.
 3. Inspect changed files to infer **what** changed (new components, bug fixes, refactors, etc.).
 4. Group the changes under the correct `ChangeType` categories: `added`, `changed`, `fixed`, `removed`, `security`.
 
@@ -276,9 +310,9 @@ Apply **semantic versioning** (`MAJOR.MINOR.PATCH`) against the current version 
 
 When multiple conditions apply, use the highest applicable bump.
 
-### Step 3 — Update all three release artifacts atomically
+### Step 3 — Update all four release artifacts atomically
 
-Make all three edits in a single pass:
+Make all edits in a single pass:
 
 1. **`data/changelog.ts`** — prepend a new `ChangelogVersion` object at the top of the `CHANGELOG` array. Use today's date (`YYYY-MM-DD`), the new version string, a concise one-sentence `summary`, and the grouped `ChangeEntry` list from Step 1.
 2. **`CHANGELOG.md`** — prepend a matching Markdown section at the top of the file (below the `# Changelog` heading if present), mirroring the same content.
@@ -295,19 +329,20 @@ After editing, confirm:
 ### Example
 
 ```
-User: bump the version
+User: add the love-letter project, then bump the version
 
 Copilot actions:
-1. git log v0.1.0..HEAD --oneline  →  finds 3 commits (new skills section, fix navbar z-index, update about copy)
-2. Determines bump: new section = MINOR  →  0.1.0 → 0.2.0
-3. Prepends entry to data/changelog.ts
-4. Prepends section to CHANGELOG.md
-5. Updates package.json "version": "0.2.0"
+1. Adds project object to PROJECTS array in projects.tsx
+2. git log --oneline  →  no new commits yet, but project was just added in this turn
+3. Determines bump: new project = MINOR  →  0.2.0 → 0.3.0
+4. Prepends entry to data/changelog.ts
+5. Prepends section to CHANGELOG.md
+6. Updates package.json "version": "0.3.0"
 ```
 
 ---
 
-## 10. TypeScript
+## 11. TypeScript
 
 - All props must be typed with `interface` or `type` — never use `any`
 - Prefer `interface` for component props, `type` for unions and utility types
@@ -315,7 +350,7 @@ Copilot actions:
 
 ---
 
-## 11. Quick Reference Checklist
+## 12. Quick Reference Checklist
 
 Before submitting any code change:
 
