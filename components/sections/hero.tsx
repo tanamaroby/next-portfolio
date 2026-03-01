@@ -59,7 +59,7 @@ export default function Hero() {
         />
         {/* subtle grid */}
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-3"
           style={{
             backgroundImage:
               "linear-gradient(to right, oklch(1 0 0) 1px, transparent 1px), linear-gradient(to bottom, oklch(1 0 0) 1px, transparent 1px)",

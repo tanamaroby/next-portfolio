@@ -1,5 +1,6 @@
 "use client";
 
+// Navbar: sticky glass header with mobile drawer
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
