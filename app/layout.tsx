@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const BASE_URL = "https://robytanama.dev";
+const BASE_URL = "https://tanamaroby.com";
 
 /**
  * Browser theme-color for the status bar / tab strip.

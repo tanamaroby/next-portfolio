@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const BASE_URL = "https://robytanama.dev";
+const BASE_URL = "https://tanamaroby.com";
 
 export const metadata: Metadata = {
   title: "Changelog",

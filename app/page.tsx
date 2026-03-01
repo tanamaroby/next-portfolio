@@ -3,6 +3,7 @@ import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import ScrollProgress from "@/components/scroll-progress";
 import About from "@/components/sections/about";
+import BlogPreview from "@/components/sections/blog-preview";
 import Contact from "@/components/sections/contact";
 import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
@@ -22,6 +23,7 @@ export default function Home() {
         <Skills />
         <Projects />
         <Testimonials />
+        <BlogPreview />
         <Contact />
       </main>
       <Footer />

@@ -19,6 +19,107 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "0.9.0",
+    date: "2026-03-02",
+    summary:
+      "Added /blog section with 4 posts, blog preview on landing page, restructured navbar into section/page groups, updated domain to tanamaroby.com, and improved LCP with next/image priority on profile photo.",
+    groups: [
+      {
+        title: "New Features",
+        entries: [
+          {
+            type: "added",
+            text: "/blog route — list page at /blog with all posts in reverse-chronological order",
+          },
+          {
+            type: "added",
+            text: "/blog/[slug] — individual post pages rendering structured content blocks (headings, paragraphs, code, lists, callouts)",
+          },
+          {
+            type: "added",
+            text: "4 blog posts: Next.js App Router deep-dive, React performance patterns, AG Grid in production lessons, and modern ERP vs SaaS bespoke analysis",
+          },
+          {
+            type: "added",
+            text: 'Blog preview section on landing page — 3 most recent posts in a card grid with a "View all posts" CTA',
+          },
+        ],
+      },
+      {
+        title: "Navigation",
+        entries: [
+          {
+            type: "changed",
+            text: "Navbar redesigned with two groups: section links (scroll anchors) and page links (Blog, Changelog) separated by a visual divider",
+          },
+          {
+            type: "changed",
+            text: 'Mobile drawer now shows "Sections" and "Pages" labels to reduce crowding',
+          },
+          {
+            type: "changed",
+            text: "Logo and Hire Me CTA now navigate to /#contact when viewed from non-home pages",
+          },
+          {
+            type: "added",
+            text: "Page links (Blog, Changelog) show active underline indicator based on current pathname",
+          },
+        ],
+      },
+      {
+        title: "SEO & Infrastructure",
+        entries: [
+          {
+            type: "changed",
+            text: "Domain updated sitewide from robytanama.dev to tanamaroby.com (layout.tsx, sitemap.ts, robots.ts, changelog layout, OG image)",
+          },
+          {
+            type: "changed",
+            text: "OG image bottom row now displays tanamaroby.com",
+          },
+          {
+            type: "added",
+            text: "Sitemap expanded with /blog index (priority 0.8) and individual post entries (priority 0.6)",
+          },
+          {
+            type: "added",
+            text: "Blog shortcut added to PWA manifest between Projects and Get in Touch",
+          },
+          {
+            type: "added",
+            text: "Blog route layout with canonical URL, OpenGraph article metadata, and per-post metadata via generateMetadata",
+          },
+        ],
+      },
+      {
+        title: "Performance",
+        entries: [
+          {
+            type: "changed",
+            text: "Profile photo in About section replaced with next/image (fill + priority + sizes=160px) for improved LCP",
+          },
+          {
+            type: "fixed",
+            text: "Lighthouse audit run: Performance 74 (dev mode), Accessibility 100, Best Practices 100, SEO 100",
+          },
+        ],
+      },
+      {
+        title: "Housekeeping",
+        entries: [
+          {
+            type: "removed",
+            text: "Deleted 7 stale image originals from public/: Aether.png, love-letter.png, Radomir.png, Trivial.png, Savenus.jpg, Yogapets.jpg, Roby.jpg (WebP versions retained)",
+          },
+          {
+            type: "fixed",
+            text: "z-[999] arbitrary class in loading.tsx simplified to z-999 (Tailwind CSS v4)",
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.8.0",
     date: "2026-03-02",
     summary:

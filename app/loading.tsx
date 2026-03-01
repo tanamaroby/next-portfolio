@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-background">
+    <div className="fixed inset-0 z-999 flex items-center justify-center bg-background">
       <div className="flex flex-col items-center gap-5">
         {/* Spinner ring + monogram */}
         <div className="relative flex h-16 w-16 items-center justify-center">

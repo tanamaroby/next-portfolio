@@ -128,7 +128,7 @@ export default function OgImage() {
         <span style={{ color: "rgba(124,58,237,0.6)" }}>·</span>
         <span>Next.js · TypeScript · Supabase</span>
         <span style={{ color: "rgba(124,58,237,0.6)" }}>·</span>
-        <span>robytanama.dev</span>
+        <span>tanamaroby.com</span>
       </div>
     </div>,
     { ...size },

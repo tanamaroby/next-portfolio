@@ -6,6 +6,49 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.9.0] — 2026-03-02
+
+Added /blog section with 4 posts, blog preview on landing page, restructured navbar into section/page groups, updated domain to tanamaroby.com, and improved LCP with next/image priority on profile photo.
+
+### Added
+
+#### New Features
+- **/blog route** — list page at `/blog` showing all posts in reverse-chronological order
+- **/blog/[slug]** — individual post pages rendering structured content blocks (headings, paragraphs, code, lists, callouts)
+- **4 blog posts**: Next.js App Router deep-dive, React performance patterns, AG Grid in production lessons, and modern ERP vs SaaS bespoke analysis
+- **Blog preview section** on the landing page — 3 most recent posts in a card grid with a "View all posts" CTA
+
+#### Navigation
+- **Page links (Blog, Changelog)** now show active underline indicator based on current pathname
+- **Blog shortcut** added to PWA manifest between Projects and Get in Touch
+
+#### SEO & Infrastructure
+- Sitemap expanded with `/blog` index (priority 0.8) and individual post entries (priority 0.6)
+- Blog route layout with canonical URL, OpenGraph article metadata, and per-post metadata via `generateMetadata`
+
+### Changed
+
+#### Navigation
+- **Navbar redesigned** with two groups: section links (scroll anchors) and page links (Blog, Changelog) separated by a visual divider
+- **Mobile drawer** now shows "Sections" and "Pages" labels to reduce crowding
+- **Logo and Hire Me CTA** now navigate to `/#contact` when viewed from non-home pages
+
+#### SEO & Infrastructure
+- **Domain updated** sitewide from `robytanama.dev` to `tanamaroby.com` (`layout.tsx`, `sitemap.ts`, `robots.ts`, changelog layout, OG image)
+- **OG image** bottom row now displays `tanamaroby.com`
+
+#### Performance
+- **Profile photo** in About section replaced with `next/image` (`fill` + `priority` + `sizes="160px"`) for improved LCP
+
+### Fixed
+- `z-[999]` arbitrary class in `loading.tsx` simplified to `z-999` (Tailwind CSS v4 syntax)
+- Lighthouse audit: Performance 74 (dev mode), Accessibility 100, Best Practices 100, SEO 100
+
+### Removed
+- **7 stale image originals** deleted from `public/`: `Aether.png`, `love-letter.png`, `Radomir.png`, `Trivial.png`, `Savenus.jpg`, `Yogapets.jpg`, `Roby.jpg` (WebP versions retained)
+
+---
+
 ## [0.8.0] — 2026-03-02
 
 Added dark/light mode toggle, active nav indicator, project tech filtering, Testimonials section, and Vercel Analytics.

@@ -1,6 +1,5 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
 import {
@@ -12,6 +11,7 @@ import {
 } from "@/lib/motion";
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
+import Image from "next/image";
 
 const HIGHLIGHTS = [
   { value: "6+", label: "Years Experience" },
@@ -51,12 +51,17 @@ export default function About() {
           <div className="relative">
             {/* Glow ring */}
             <div className="absolute -inset-1 rounded-full bg-linear-to-br from-primary/40 via-primary/10 to-transparent blur-md" />
-            <Avatar className="relative h-40 w-40 border-2 border-primary/30 text-4xl">
-              <AvatarImage src="/Roby.webp" alt="Roby Tanama" />
-              <AvatarFallback className="bg-muted text-3xl font-bold text-primary">
-                RT
-              </AvatarFallback>
-            </Avatar>
+            {/* Profile photo — next/image with priority for faster LCP */}
+            <div className="relative h-40 w-40 overflow-hidden rounded-full border-2 border-primary/30">
+              <Image
+                src="/Roby.webp"
+                alt="Roby Tanama"
+                fill
+                priority
+                sizes="160px"
+                className="object-cover"
+              />
+            </div>
           </div>
 
           {/* Stats grid */}

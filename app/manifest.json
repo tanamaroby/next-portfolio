@@ -48,6 +48,13 @@
       "icons": [{ "src": "/web-app-manifest-192x192.png", "sizes": "192x192" }]
     },
     {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Read writing on Next.js, React, and bespoke software",
+      "url": "/blog?source=pwa",
+      "icons": [{ "src": "/web-app-manifest-192x192.png", "sizes": "192x192" }]
+    },
+    {
       "name": "Get in Touch",
       "short_name": "Contact",
       "description": "Jump to the contact section",
