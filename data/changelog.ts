@@ -19,6 +19,47 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "1.1.0",
+    date: "2026-03-02",
+    summary:
+      "Comprehensive SEO pass: BlogPosting structured data on every post, per-post dynamic Open Graph images, correct sitemap dates, Twitter cards and googleBot directives on all routes, and siteName on all OG objects.",
+    groups: [
+      {
+        title: "SEO & Metadata",
+        entries: [
+          {
+            type: "added",
+            text: "BlogPosting JSON-LD structured data injected in blog/[slug]/layout.tsx — includes headline, datePublished, keywords, author, publisher, and isPartOf WebSite references",
+          },
+          {
+            type: "added",
+            text: "Per-post dynamic Open Graph image at app/blog/[slug]/opengraph-image.tsx — renders post title, author badge, and tag pills at 1200×630 on the edge runtime",
+          },
+          {
+            type: "fixed",
+            text: "Sitemap blog entries now use actual post.date for lastModified instead of new Date() — ensures Google sees accurate freshness signals",
+          },
+          {
+            type: "added",
+            text: "Twitter card metadata (summary_large_image, site, creator) added to /blog and /changelog route layouts",
+          },
+          {
+            type: "added",
+            text: "googleBot directive (max-image-preview: large, max-snippet: -1) added to /blog, /changelog, and blog/[slug] layouts — matches root layout",
+          },
+          {
+            type: "added",
+            text: "openGraph.siteName added to /blog, /changelog, and blog/[slug] metadata for consistent social card rendering",
+          },
+          {
+            type: "removed",
+            text: "Non-standard host field removed from robots.ts",
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "1.0.0",
     date: "2026-03-02",
     summary:
