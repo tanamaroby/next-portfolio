@@ -8,6 +8,7 @@ import Experience from "@/components/sections/experience";
 import Hero from "@/components/sections/hero";
 import Projects from "@/components/sections/projects";
 import Skills from "@/components/sections/skills";
+import Testimonials from "@/components/sections/testimonials";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
         <Experience />
         <Skills />
         <Projects />
+        <Testimonials />
         <Contact />
       </main>
       <Footer />
