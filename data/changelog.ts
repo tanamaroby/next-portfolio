@@ -19,51 +19,10 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
-    version: "1.1.0",
-    date: "2026-03-02",
-    summary:
-      "Comprehensive SEO pass: BlogPosting structured data on every post, per-post dynamic Open Graph images, correct sitemap dates, Twitter cards and googleBot directives on all routes, and siteName on all OG objects.",
-    groups: [
-      {
-        title: "SEO & Metadata",
-        entries: [
-          {
-            type: "added",
-            text: "BlogPosting JSON-LD structured data injected in blog/[slug]/layout.tsx — includes headline, datePublished, keywords, author, publisher, and isPartOf WebSite references",
-          },
-          {
-            type: "added",
-            text: "Per-post dynamic Open Graph image at app/blog/[slug]/opengraph-image.tsx — renders post title, author badge, and tag pills at 1200×630 on the edge runtime",
-          },
-          {
-            type: "fixed",
-            text: "Sitemap blog entries now use actual post.date for lastModified instead of new Date() — ensures Google sees accurate freshness signals",
-          },
-          {
-            type: "added",
-            text: "Twitter card metadata (summary_large_image, site, creator) added to /blog and /changelog route layouts",
-          },
-          {
-            type: "added",
-            text: "googleBot directive (max-image-preview: large, max-snippet: -1) added to /blog, /changelog, and blog/[slug] layouts — matches root layout",
-          },
-          {
-            type: "added",
-            text: "openGraph.siteName added to /blog, /changelog, and blog/[slug] metadata for consistent social card rendering",
-          },
-          {
-            type: "removed",
-            text: "Non-standard host field removed from robots.ts",
-          },
-        ],
-      },
-    ],
-  },
-  {
     version: "1.0.0",
     date: "2026-03-02",
     summary:
-      "Navbar More dropdown, opaque mobile drawer, smarter blog sorting, two new posts on database pooling and Supabase production patterns, and avatar load improvement.",
+      "Navbar More dropdown, opaque mobile drawer, smarter blog sorting, two new posts on database pooling and Supabase production patterns, avatar load improvement, and a comprehensive SEO pass across all routes.",
     groups: [
       {
         title: "Navigation",
@@ -92,6 +51,39 @@ export const CHANGELOG: ChangelogVersion[] = [
           {
             type: "added",
             text: "New post: 'Supabase in Production' — covers Row-Level Security patterns, multi-tenant RLS with org membership helpers, Realtime Broadcast vs Postgres Changes, Edge Functions, Storage RLS policies, and performance tips",
+          },
+        ],
+      },
+      {
+        title: "SEO & Metadata",
+        entries: [
+          {
+            type: "added",
+            text: "BlogPosting JSON-LD structured data injected in blog/[slug]/layout.tsx — includes headline, datePublished, keywords, author, publisher, and isPartOf WebSite references",
+          },
+          {
+            type: "added",
+            text: "Per-post dynamic Open Graph image at app/blog/[slug]/opengraph-image.tsx — renders post title, author badge, and tag pills at 1200×630 on the edge runtime",
+          },
+          {
+            type: "added",
+            text: "Twitter card metadata (summary_large_image, site, creator) added to /blog and /changelog route layouts",
+          },
+          {
+            type: "added",
+            text: "googleBot directive (max-image-preview: large, max-snippet: -1) added to /blog, /changelog, and blog/[slug] layouts — matches root layout",
+          },
+          {
+            type: "added",
+            text: "openGraph.siteName added to /blog, /changelog, and blog/[slug] metadata for consistent social card rendering",
+          },
+          {
+            type: "fixed",
+            text: "Sitemap blog entries now use actual post.date for lastModified instead of new Date() — ensures Google sees accurate freshness signals",
+          },
+          {
+            type: "removed",
+            text: "Non-standard host field removed from robots.ts",
           },
         ],
       },

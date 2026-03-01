@@ -6,11 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [1.1.0] — 2026-03-02
+## [1.0.0] — 2026-03-02
 
-Comprehensive SEO pass: BlogPosting structured data on every post, per-post dynamic Open Graph images, correct sitemap dates, Twitter cards and googleBot directives on all routes, and siteName on all OG objects.
+Navbar More dropdown, opaque mobile drawer, smarter blog sorting, two new posts on database pooling and Supabase production patterns, avatar load improvement, and a comprehensive SEO pass across all routes.
 
 ### Added
+
+#### Blog
+- `getSortedBlogPosts()` utility exported from `data/blog.ts` — blog list page and homepage preview now always display posts newest-first
+- **New post**: *Database Connection Pooling in Serverless* — covers Postgres connection exhaustion in serverless, Supabase Supavisor (port 6543 vs 5432), Prisma dual-URL config, and connection monitoring
+- **New post**: *Supabase in Production* — covers Row-Level Security patterns, multi-tenant RLS with org membership helpers, Realtime Broadcast vs Postgres Changes, Edge Functions, Storage RLS policies, and performance tips
 
 #### SEO & Metadata
 - **BlogPosting JSON-LD** injected in `blog/[slug]/layout.tsx` — includes `headline`, `datePublished`, `keywords`, `author`, `publisher`, and `isPartOf` WebSite references
@@ -18,20 +23,6 @@ Comprehensive SEO pass: BlogPosting structured data on every post, per-post dyna
 - **Twitter card** metadata (`summary_large_image`, `site`, `creator`) added to `/blog` and `/changelog` route layouts
 - **`googleBot` directive** (`max-image-preview: large`, `max-snippet: -1`) added to `/blog`, `/changelog`, and `blog/[slug]` layouts — matches root layout
 - **`openGraph.siteName`** added to `/blog`, `/changelog`, and `blog/[slug]` metadata for consistent social card rendering
-
-### Fixed
-
-- Sitemap blog entries now use actual `post.date` for `lastModified` instead of `new Date()` — ensures Google sees accurate freshness signals
-
-### Removed
-
-- Non-standard `host` field removed from `robots.ts`
-
----
-
-## [1.0.0] — 2026-03-02
-
-Navbar More dropdown, opaque mobile drawer, smarter blog sorting, two new posts on database pooling and Supabase production patterns, and avatar load improvement.
 
 ### Changed
 
@@ -42,12 +33,13 @@ Navbar More dropdown, opaque mobile drawer, smarter blog sorting, two new posts 
 #### Performance
 - Profile photo container in About section now has `bg-primary/10` as a branded placeholder shown while the WebP loads; `fetchPriority="high"` added alongside the existing `priority` prop
 
-### Added
+### Fixed
 
-#### Blog
-- `getSortedBlogPosts()` utility exported from `data/blog.ts` — blog list page and homepage preview now always display posts newest-first
-- **New post**: *Database Connection Pooling in Serverless* — covers Postgres connection exhaustion in serverless, Supabase Supavisor (port 6543 vs 5432), Prisma dual-URL config, and connection monitoring
-- **New post**: *Supabase in Production* — covers Row-Level Security patterns, multi-tenant RLS with org membership helpers, Realtime Broadcast vs Postgres Changes, Edge Functions, Storage RLS policies, and performance tips
+- Sitemap blog entries now use actual `post.date` for `lastModified` instead of `new Date()` — ensures Google sees accurate freshness signals
+
+### Removed
+
+- Non-standard `host` field removed from `robots.ts`
 
 ---
 
