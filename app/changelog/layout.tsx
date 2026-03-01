@@ -14,11 +14,26 @@ export const metadata: Metadata = {
     description:
       "All notable changes to Roby Tanama's portfolio, documented newest first.",
     url: `${BASE_URL}/changelog`,
+    siteName: "Roby Tanama",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@SCourtest",
+    creator: "@SCourtest",
+    title: "Changelog | Roby Tanama",
+    description:
+      "All notable changes to Roby Tanama's portfolio, documented newest first.",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

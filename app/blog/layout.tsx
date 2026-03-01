@@ -14,11 +14,26 @@ export const metadata: Metadata = {
     description:
       "Writing by Roby Tanama on Next.js, React, AG Grid, and building bespoke software for real businesses.",
     url: `${BASE_URL}/blog`,
+    siteName: "Roby Tanama",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@SCourtest",
+    creator: "@SCourtest",
+    title: "Blog | Roby Tanama",
+    description:
+      "Writing by Roby Tanama on Next.js, React, AG Grid, and building bespoke software for real businesses.",
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

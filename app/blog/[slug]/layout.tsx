@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${post.title} | Roby Tanama`,
       description: post.description,
       url: `${BASE_URL}/blog/${slug}`,
+      siteName: "Roby Tanama",
       type: "article",
       publishedTime: post.date,
       authors: ["Roby Tanama"],
@@ -38,6 +39,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     robots: {
       index: true,
       follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
   };
 }
@@ -53,5 +60,38 @@ export default async function BlogPostLayout({
   const post = getBlogPost(slug);
   if (!post) notFound();
 
-  return <>{children}</>;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": `${BASE_URL}/blog/${post.slug}`,
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    url: `${BASE_URL}/blog/${post.slug}`,
+    keywords: post.tags.join(", "),
+    author: {
+      "@type": "Person",
+      "@id": `${BASE_URL}/#person`,
+      name: "Roby Tanama",
+    },
+    publisher: {
+      "@type": "Person",
+      "@id": `${BASE_URL}/#person`,
+      name: "Roby Tanama",
+    },
+    isPartOf: {
+      "@type": "WebSite",
+      "@id": `${BASE_URL}/#website`,
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

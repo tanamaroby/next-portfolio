@@ -1,12 +1,12 @@
-import { getAllBlogSlugs } from "@/data/blog";
+import { getSortedBlogPosts } from "@/data/blog";
 import type { MetadataRoute } from "next";
 
 const BASE_URL = "https://tanamaroby.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const blogEntries = getAllBlogSlugs().map((slug) => ({
-    url: `${BASE_URL}/blog/${slug}`,
-    lastModified: new Date(),
+  const blogEntries = getSortedBlogPosts().map((post) => ({
+    url: `${BASE_URL}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
     changeFrequency: "monthly" as const,
     priority: 0.6,
   }));
