@@ -19,6 +19,23 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "0.3.0",
+    date: "2026-03-02",
+    summary:
+      "Added love-letter — a full-stack social media platform — to the Projects section.",
+    groups: [
+      {
+        title: "Projects",
+        entries: [
+          {
+            type: "added",
+            text: "love-letter — full-stack social media web app with real-time notifications, Supabase Realtime presence & broadcast, global chat, personal and admin analytics dashboards, versioned public REST API, and PWA support",
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.2.0",
     date: "2026-03-02",
     summary:

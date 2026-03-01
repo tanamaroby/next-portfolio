@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.3.0] — 2026-03-02
+
+Added love-letter — a full-stack social media platform — to the Projects section.
+
+### Added
+
+#### Projects
+- **love-letter** — full-stack social media web app featuring post creation (text, image, audio), friends network, real-time online presence, instant in-app notifications via Supabase Realtime, global live chat room (Supabase Broadcast), personal engagement analytics, admin platform-wide dashboard with CSV/PDF export, versioned public REST API (key-authenticated, rate-limited), PWA with service worker, and containerised deployment via Docker + Vercel
+  - Stack: Next.js 16, TypeScript, Tailwind CSS, ShadCN UI, Supabase (Auth, Realtime, Storage, Postgres + RLS), Prisma, Docker
+
+---
+
 ## [0.2.0] — 2026-03-02
 
 Content update: populated all sections with real personal information, added profile photo, project screenshots, and a new Experience timeline section.

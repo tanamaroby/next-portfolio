@@ -28,6 +28,22 @@ interface Project {
 
 const PROJECTS: Project[] = [
   {
+    title: "love-letter — Social Media Platform",
+    description:
+      "Full-stack social media web app where users share posts (text, images, audio), build a friends network, and interact in real time. Features live online presence, instant notifications via Supabase Realtime, a global chat room, personal and admin analytics dashboards, a versioned public REST API, and PWA support.",
+    tech: [
+      "Next.js",
+      "TypeScript",
+      "Supabase",
+      "Prisma",
+      "Tailwind CSS",
+      "ShadCN UI",
+      "Docker",
+    ],
+    image: "/love-letter.png",
+    featured: true,
+  },
+  {
     title: "Trivial — ERP / Workflow Platform",
     description:
       "A comprehensive ERP and workflow management platform built from the ground up. Features a visual node-based flow editor, modular field system, inventory management with Excel import, real-time push notifications, WhatsApp integration, and role-based authorization.",
@@ -41,7 +57,6 @@ const PROJECTS: Project[] = [
       "Online pet caring platform for both pet owners and caretakers. Pet owners can register pets and bid for caretakers; caretakers can find full-time or part-time employment with automated salary calculation.",
     tech: ["PostgreSQL", "Full-Stack", "Database Design"],
     image: "/Yogapets.jpg",
-    featured: true,
   },
   {
     title: "Aether — Multiplayer Platformer",
