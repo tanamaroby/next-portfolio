@@ -1,3 +1,5 @@
+import { Providers } from "@/components/providers";
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -16,10 +18,12 @@ const BASE_URL = "https://robytanama.dev";
 
 /**
  * Browser theme-color for the status bar / tab strip.
- * Matches --background in dark mode (oklch(0.145 0 0) ≈ #0a0a0a).
  * Must be a literal string — CSS variables cannot be used in <meta> tags.
+ * Dark: matches --background in dark mode (oklch(0.145 0 0) ≈ #0a0a0a).
+ * Light: matches --background in light mode (oklch(1 0 0) = #ffffff).
  */
 const DARK_THEME_COLOR = "#0a0a0f";
+const LIGHT_THEME_COLOR = "#ffffff";
 
 const TITLE = "Roby Tanama — Co-Founder & CTO · Full-Stack Engineer";
 const DESCRIPTION =
@@ -196,9 +200,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: dark)", color: DARK_THEME_COLOR },
-    { media: "(prefers-color-scheme: light)", color: DARK_THEME_COLOR },
+    { media: "(prefers-color-scheme: light)", color: LIGHT_THEME_COLOR },
   ],
-  colorScheme: "dark",
+  colorScheme: "dark light",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -210,7 +214,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
@@ -222,7 +226,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>
+          {children}
+          <Analytics />
+        </Providers>
       </body>
     </html>
   );

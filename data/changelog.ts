@@ -19,6 +19,62 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "0.8.0",
+    date: "2026-03-02",
+    summary:
+      "Added dark/light mode toggle, active nav indicator, project tech filtering, Testimonials section, and Vercel Analytics.",
+    groups: [
+      {
+        title: "UI & UX",
+        entries: [
+          {
+            type: "added",
+            text: "Dark/light mode toggle in navbar — powered by next-themes with mounted-state guard to prevent hydration mismatches; defaults to dark",
+          },
+          {
+            type: "added",
+            text: "Active nav indicator — IntersectionObserver watches each section and highlights the corresponding nav link as you scroll (underline transitions in/out)",
+          },
+          {
+            type: "added",
+            text: "Project tech filtering — filter pill buttons above the projects grid let visitors filter by technology; AnimatePresence handles card enter/exit transitions",
+          },
+        ],
+      },
+      {
+        title: "Content",
+        entries: [
+          {
+            type: "added",
+            text: "Testimonials section — four client testimonials from founders, operators, and product leaders; placed between Projects and Contact",
+          },
+        ],
+      },
+      {
+        title: "Analytics",
+        entries: [
+          {
+            type: "added",
+            text: "Vercel Analytics integrated via @vercel/analytics/react — <Analytics /> injected inside Providers in the root layout",
+          },
+        ],
+      },
+      {
+        title: "Infrastructure",
+        entries: [
+          {
+            type: "added",
+            text: 'components/providers.tsx — ThemeProvider wrapper; root layout html element no longer hardcodes className="dark"',
+          },
+          {
+            type: "changed",
+            text: 'viewport colorScheme updated from "dark" to "dark light"; themeColor media query now returns #ffffff for light mode',
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.7.0",
     date: "2026-03-02",
     summary:

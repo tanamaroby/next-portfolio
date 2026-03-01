@@ -216,8 +216,9 @@ app/
     page.tsx                — Changelog page component
 
 components/
-  navbar.tsx                — Site navigation
+  navbar.tsx                — Site navigation (active section indicator via IntersectionObserver, theme toggle)
   footer.tsx                — Site footer
+  providers.tsx             — Client-side ThemeProvider wrapper (next-themes); imported by root layout
   scroll-progress.tsx       — Thin branded bar at the top tracking scroll position
   back-to-top.tsx           — Floating button (bottom-right); appears after 400px scroll
   sections/                 — Full-page sections
@@ -225,7 +226,8 @@ components/
     about.tsx               — Profile photo, stats grid, bio, interest tags
     experience.tsx          — Vertical timeline of work history + education card
     skills.tsx              — Technical toolkit grouped by category
-    projects.tsx            — Project cards with images, tech badges, award badges
+    projects.tsx            — Project cards with images, tech badges, filter pills, award badges
+    testimonials.tsx        — Client testimonial cards grid
     contact.tsx             — Email CTA and social link grid
   ui/                       — ShadCN-generated primitives (do not edit manually)
 
@@ -250,7 +252,45 @@ public/                     — Static assets (profile photo, project screenshot
 
 ---
 
-## 9. SEO & PWA Conventions
+## 8. Dark / Light Mode
+
+The site supports dark and light themes via **`next-themes`**.
+
+- `components/providers.tsx` wraps children in `<ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>`
+- `providers.tsx` is imported in `app/layout.tsx` and wraps all page content inside `<body>`
+- The `<html>` element does **not** have a hardcoded `className="dark"` — `next-themes` manages this at runtime
+- `suppressHydrationWarning` must remain on `<html>` to suppress the one-time class mismatch
+- Any component that renders theme-dependent UI (e.g. the toggle icon) must use a `mounted` state guard:
+
+```tsx
+const [mounted, setMounted] = useState(false);
+useEffect(() => setMounted(true), []);
+if (!mounted) return <div className="h-9 w-9" aria-hidden />; // placeholder maintains layout
+```
+
+- `viewport.colorScheme` is `"dark light"` — never lock it back to `"dark"`
+- `themeColor` uses two media-query entries (dark → `DARK_THEME_COLOR`, light → `LIGHT_THEME_COLOR`)
+
+---
+
+## 8b. Active Nav Indicator
+
+The navbar uses `IntersectionObserver` — **not** scroll events — to track which section is in view:
+
+- One `IntersectionObserver` is created per section ID; all are disconnected on cleanup
+- `rootMargin: "-40% 0% -60% 0%"` fires when a section occupies the central 20% of the viewport
+- Active state is stored in `activeSection: string`; the matching link renders a full-width underline
+- The same `activeSection` state highlights mobile drawer items with `bg-accent/50`
+
+---
+
+## 8c. Analytics
+
+- Vercel Analytics is enabled via `@vercel/analytics/react`
+- `<Analytics />` is rendered inside `<Providers>` in `app/layout.tsx`
+- No configuration is needed beyond the Vercel dashboard toggle
+
+---
 
 ### Metadata (`app/layout.tsx`)
 
@@ -298,7 +338,28 @@ public/                     — Static assets (profile photo, project screenshot
 
 ---
 
-## 10. Adding a Project
+## 11. Adding a Testimonial
+
+Testimonials live in the `TESTIMONIALS` constant at the top of `components/sections/testimonials.tsx`.
+
+### `Testimonial` interface
+
+```typescript
+interface Testimonial {
+  quote: string; // Full testimonial text (no surrounding quotes — template adds them)
+  title: string; // Job title of the reviewer
+  industry: string; // Broad industry descriptor — company name withheld per client request
+}
+```
+
+- **Never** add a real name or company name — identities are kept confidential; use `title` + `industry` only
+- Keep quotes 1–3 sentences; focus on concrete outcomes or work ethic
+- Order: most recent / most impactful first
+- Always bump the version after adding a testimonial (counts as `added`)
+
+---
+
+## 12. Adding a Project
 
 Projects live in the `PROJECTS` constant at the top of `components/sections/projects.tsx`.
 
@@ -326,7 +387,7 @@ interface Project {
 
 ---
 
-## 11. Changelog Maintenance
+## 13. Changelog Maintenance
 
 When releasing a new version:
 
@@ -346,7 +407,7 @@ Use the `ChangelogVersion` type from `data/changelog.ts` for type safety. Group 
 
 ---
 
-## 12. "Bump the Version" Workflow
+## 14. "Bump the Version" Workflow
 
 When the user says **"bump the version"** (or any equivalent like "release", "cut a release", "publish a new version"), Copilot must execute the following steps autonomously — do not ask for confirmation unless a decision is genuinely ambiguous.
 
@@ -401,7 +462,7 @@ Copilot actions:
 
 ---
 
-## 13. TypeScript
+## 15. TypeScript
 
 - All props must be typed with `interface` or `type` — never use `any`
 - Prefer `interface` for component props, `type` for unions and utility types
@@ -409,7 +470,7 @@ Copilot actions:
 
 ---
 
-## 14. Quick Reference Checklist
+## 16. Quick Reference Checklist
 
 Before submitting any code change:
 
@@ -418,6 +479,7 @@ Before submitting any code change:
 - [ ] Tailwind color classes use semantic tokens (`text-primary`, not `text-purple-500`)
 - [ ] Reusable visual patterns use `@utility` in `globals.css`, not inline styles
 - [ ] Animation variants are imported from `lib/motion.ts`
+- [ ] Theme-dependent client UI uses `mounted` state guard to prevent hydration mismatch
 - [ ] New changelog entries are added to both `data/changelog.ts` and `CHANGELOG.md`
 - [ ] `package.json` version is bumped for any user-visible release
 - [ ] New public routes are added to `app/sitemap.ts`
@@ -426,3 +488,4 @@ Before submitting any code change:
 - [ ] JSON-LD `structuredDataJsonLd` in `layout.tsx` is kept in sync with real contact/social data
 - [ ] New project images are converted to WebP (`cwebp -q 85 -resize 1200 0`) before being placed in `public/`
 - [ ] New major routes get a corresponding PWA shortcut in `manifest.json`
+- [ ] New sections added to both `app/page.tsx` and the `NAV_LINKS` array in `components/navbar.tsx`

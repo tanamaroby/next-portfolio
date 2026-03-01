@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.8.0] — 2026-03-02
+
+Added dark/light mode toggle, active nav indicator, project tech filtering, Testimonials section, and Vercel Analytics.
+
+### Added
+
+#### UI & UX
+- **Dark/light mode toggle** — powered by `next-themes`; mounted-state guard prevents hydration mismatches; defaults to dark
+- **Active nav indicator** — `IntersectionObserver` watches each section and highlights the corresponding link as you scroll; underline transitions in/out
+- **Project tech filtering** — filter pill buttons above the projects grid; `AnimatePresence` handles card enter/exit transitions
+
+#### Content
+- **Testimonials section** — four client testimonials from founders, operators, and product leaders; placed between Projects and Contact
+
+#### Analytics
+- **Vercel Analytics** — `@vercel/analytics/react` integrated; `<Analytics />` injected inside `Providers` in root layout
+
+### Changed
+
+#### Infrastructure
+- **`components/providers.tsx`** — new `ThemeProvider` wrapper; `html` element no longer hardcodes `className="dark"`
+- **`viewport.colorScheme`** — updated from `"dark"` to `"dark light"`; `themeColor` light-mode media query now returns `#ffffff`
+
+---
+
 ## [0.7.0] — 2026-03-02
 
 SEO & performance: WebP image conversion, WebSite/WebPage JSON-LD @graph, apple-touch-icon meta links, and Twitter card alt text.

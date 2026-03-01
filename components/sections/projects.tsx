@@ -10,10 +10,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { fadeInUp, staggerContainer, viewportConfig } from "@/lib/motion";
-import { motion } from "framer-motion";
+import { fadeInUp, viewportConfig } from "@/lib/motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink, Github, Star, Trophy } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 
 interface Project {
   title: string;
@@ -82,7 +83,19 @@ const PROJECTS: Project[] = [
   },
 ];
 
+// Derive unique tech tags (preserving first-seen order) for filter pills
+const ALL_TAGS = [
+  "All",
+  ...Array.from(new Set(PROJECTS.flatMap((p) => p.tech))),
+];
+
 export default function Projects() {
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const filtered =
+    activeFilter === "All"
+      ? PROJECTS
+      : PROJECTS.filter((p) => p.tech.includes(activeFilter));
   return (
     <section id="projects" className="section-padding mx-auto max-w-6xl">
       {/* Section title */}
@@ -104,112 +117,136 @@ export default function Projects() {
         </p>
       </motion.div>
 
-      {/* Project grid */}
+      {/* Filter pills */}
       <motion.div
-        className="grid gap-5 sm:grid-cols-2"
-        variants={staggerContainer}
+        className="mb-8 flex flex-wrap justify-center gap-2"
+        variants={fadeInUp}
         initial="hidden"
         whileInView="visible"
         viewport={viewportConfig}
       >
-        {PROJECTS.map((project, i) => (
-          <motion.div
-            key={i}
-            variants={fadeInUp}
-            whileHover={{ y: -4, transition: { duration: 0.2 } }}
-            className="group"
+        {ALL_TAGS.map((tag) => (
+          <button
+            key={tag}
+            onClick={() => setActiveFilter(tag)}
+            className={`rounded-full border px-3.5 py-1 text-xs font-medium transition-all duration-200 ${
+              activeFilter === tag
+                ? "border-primary bg-primary/10 text-primary"
+                : "border-border/50 text-muted-foreground hover:border-primary/40 hover:text-foreground"
+            }`}
           >
-            <Card className="flex h-full flex-col border-border/50 bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 overflow-hidden">
-              {/* Project image */}
-              {project.image && (
-                <div className="relative h-44 w-full overflow-hidden border-b border-border/40">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, 50vw"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-card/60 to-transparent" />
-                </div>
-              )}
-
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between gap-2">
-                  <CardTitle className="text-lg font-semibold group-hover:text-primary transition-colors">
-                    {project.title}
-                  </CardTitle>
-                  {project.featured && (
-                    <Badge className="shrink-0 border-primary/40 bg-primary/10 text-primary text-xs">
-                      <Star size={10} className="mr-1" />
-                      Featured
-                    </Badge>
-                  )}
-                </div>
-                {project.award && (
-                  <p className="flex items-center gap-1.5 text-xs font-medium text-primary/80">
-                    <Trophy size={11} />
-                    {project.award}
-                  </p>
-                )}
-                <CardDescription className="text-sm leading-relaxed text-muted-foreground">
-                  {project.description}
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent className="flex-1 pb-4">
-                <div className="flex flex-wrap gap-1.5">
-                  {project.tech.map((t) => (
-                    <Badge
-                      key={t}
-                      variant="secondary"
-                      className="border border-border/40 bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
-                    >
-                      {t}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-
-              <CardFooter className="gap-2 pt-0">
-                {project.github && (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="gap-1.5 text-muted-foreground hover:text-foreground"
-                    asChild
-                  >
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github size={14} />
-                      Code
-                    </a>
-                  </Button>
-                )}
-                {project.demo && (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="gap-1.5 text-muted-foreground hover:text-primary"
-                    asChild
-                  >
-                    <a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ExternalLink size={14} />
-                      Live Demo
-                    </a>
-                  </Button>
-                )}
-              </CardFooter>
-            </Card>
-          </motion.div>
+            {tag}
+          </button>
         ))}
+      </motion.div>
+
+      {/* Project grid */}
+      <motion.div layout className="grid gap-5 sm:grid-cols-2">
+        <AnimatePresence mode="popLayout">
+          {filtered.map((project, i) => (
+            <motion.div
+              key={project.title}
+              layout
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              variants={fadeInUp}
+              whileHover={{ y: -4, transition: { duration: 0.2 } }}
+              className="group"
+            >
+              <Card className="flex h-full flex-col border-border/50 bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 overflow-hidden">
+                {/* Project image */}
+                {project.image && (
+                  <div className="relative h-44 w-full overflow-hidden border-b border-border/40">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-card/60 to-transparent" />
+                  </div>
+                )}
+
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <CardTitle className="text-lg font-semibold group-hover:text-primary transition-colors">
+                      {project.title}
+                    </CardTitle>
+                    {project.featured && (
+                      <Badge className="shrink-0 border-primary/40 bg-primary/10 text-primary text-xs">
+                        <Star size={10} className="mr-1" />
+                        Featured
+                      </Badge>
+                    )}
+                  </div>
+                  {project.award && (
+                    <p className="flex items-center gap-1.5 text-xs font-medium text-primary/80">
+                      <Trophy size={11} />
+                      {project.award}
+                    </p>
+                  )}
+                  <CardDescription className="text-sm leading-relaxed text-muted-foreground">
+                    {project.description}
+                  </CardDescription>
+                </CardHeader>
+
+                <CardContent className="flex-1 pb-4">
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.tech.map((t) => (
+                      <Badge
+                        key={t}
+                        variant="secondary"
+                        className="border border-border/40 bg-secondary px-2.5 py-0.5 text-xs font-medium text-secondary-foreground"
+                      >
+                        {t}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+
+                <CardFooter className="gap-2 pt-0">
+                  {project.github && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="gap-1.5 text-muted-foreground hover:text-foreground"
+                      asChild
+                    >
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Github size={14} />
+                        Code
+                      </a>
+                    </Button>
+                  )}
+                  {project.demo && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="gap-1.5 text-muted-foreground hover:text-primary"
+                      asChild
+                    >
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink size={14} />
+                        Live Demo
+                      </a>
+                    </Button>
+                  )}
+                </CardFooter>
+              </Card>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </motion.div>
 
       {/* View all on GitHub */}
