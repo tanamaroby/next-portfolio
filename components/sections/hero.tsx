@@ -28,7 +28,7 @@ export default function Hero() {
           className="absolute -top-40 left-1/4 h-130 w-130 rounded-full"
           style={{
             background:
-              "radial-gradient(circle, oklch(0.68 0.24 290 / 18%) 0%, transparent 70%)",
+              "radial-gradient(circle, var(--hero-orb-1) 0%, transparent 70%)",
             filter: "blur(60px)",
           }}
           animate={{
@@ -42,7 +42,7 @@ export default function Hero() {
           className="absolute -bottom-40 right-1/4 h-120 w-120 rounded-full"
           style={{
             background:
-              "radial-gradient(circle, oklch(0.65 0.22 260 / 14%) 0%, transparent 70%)",
+              "radial-gradient(circle, var(--hero-orb-2) 0%, transparent 70%)",
             filter: "blur(60px)",
           }}
           animate={{
@@ -62,7 +62,7 @@ export default function Hero() {
           className="absolute inset-0 opacity-3"
           style={{
             backgroundImage:
-              "linear-gradient(to right, oklch(1 0 0) 1px, transparent 1px), linear-gradient(to bottom, oklch(1 0 0) 1px, transparent 1px)",
+              "linear-gradient(to right, var(--color-foreground) 1px, transparent 1px), linear-gradient(to bottom, var(--color-foreground) 1px, transparent 1px)",
             backgroundSize: "64px 64px",
           }}
         />

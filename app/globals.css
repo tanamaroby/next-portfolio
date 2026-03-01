@@ -7,6 +7,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  /* ── Branded / accent colors ── */
+  --color-gradient-accent: var(--gradient-accent);
+  --color-shadow: var(--shadow-color);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -80,6 +83,11 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* ── Custom design tokens ── */
+  --gradient-accent: oklch(0.45 0.22 290); /* Muted violet for light mode */
+  --shadow-color: oklch(0 0 0);
+  --hero-orb-1: oklch(0.68 0.24 290 / 18%);
+  --hero-orb-2: oklch(0.65 0.22 260 / 14%);
 }
 
 .dark {
@@ -114,6 +122,11 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  /* ── Custom design tokens ── */
+  --gradient-accent: oklch(0.68 0.18 290); /* Bright violet for dark mode */
+  --shadow-color: oklch(0 0 0);
+  --hero-orb-1: oklch(0.68 0.24 290 / 18%);
+  --hero-orb-2: oklch(0.65 0.22 260 / 14%);
 }
 
 @layer base {
@@ -123,4 +136,47 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Custom utilities — all values reference CSS custom properties defined above.
+   Never use raw color values (oklch, hex, rgb) inside @utility blocks.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@utility text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-gradient-accent) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility glow-primary {
+  box-shadow: 0 0 20px 4px
+    color-mix(in oklch, var(--color-primary) 30%, transparent);
+}
+
+@utility glow-primary-sm {
+  box-shadow: 0 0 10px 2px
+    color-mix(in oklch, var(--color-primary) 25%, transparent);
+}
+
+@utility glass {
+  background-color: color-mix(
+    in oklch,
+    var(--color-background) 75%,
+    transparent
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+@utility section-padding {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }

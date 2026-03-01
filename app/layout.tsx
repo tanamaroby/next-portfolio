@@ -14,6 +14,13 @@ const geistMono = Geist_Mono({
 
 const BASE_URL = "https://robytanama.dev";
 
+/**
+ * Browser theme-color for the status bar / tab strip.
+ * Matches --background in dark mode (oklch(0.145 0 0) ≈ #0a0a0a).
+ * Must be a literal string — CSS variables cannot be used in <meta> tags.
+ */
+const DARK_THEME_COLOR = "#0a0a0f";
+
 export const metadata: Metadata = {
   title: {
     default: "Roby Tanama — Software Engineer",
@@ -60,7 +67,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0f",
+  themeColor: DARK_THEME_COLOR,
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
