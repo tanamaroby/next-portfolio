@@ -19,6 +19,57 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "0.2.0",
+    date: "2026-03-02",
+    summary:
+      "Content update: populated all sections with real personal information, added profile photo, project screenshots, and a new Experience timeline section.",
+    groups: [
+      {
+        title: "New Sections",
+        entries: [
+          {
+            type: "added",
+            text: "Experience section — vertical timeline with 4 roles (TrieTech, One X Tech, GIC, oCap Management) plus NUS education card",
+          },
+        ],
+      },
+      {
+        title: "Real Content",
+        entries: [
+          {
+            type: "changed",
+            text: 'Hero — updated subtitle to "Co-Founder & CTO @ TrieTech · Full-Stack Engineer", real social links (GitHub, LinkedIn, Twitter/X, Email), and real description',
+          },
+          {
+            type: "changed",
+            text: "About — added real profile photo (Roby.jpg), Singapore location, real bio paragraphs, and updated interest tags",
+          },
+          {
+            type: "changed",
+            text: "Skills — replaced all placeholders with full real tech stack across 6 categories (Languages, Frontend, Backend, Database, DevOps & Cloud, Tools & Practices)",
+          },
+          {
+            type: "changed",
+            text: "Projects — replaced placeholder cards with 5 real projects (Trivial, YogaPets, Aether, SaveNUS, Radomir) each with project images, real descriptions, and an award badge for Aether",
+          },
+          {
+            type: "changed",
+            text: "Contact — updated all links to real email (tanamaroby@gmail.com), LinkedIn, GitHub (tanamaroby), and Twitter/X (SCourtest)",
+          },
+        ],
+      },
+      {
+        title: "Navigation",
+        entries: [
+          {
+            type: "added",
+            text: "Experience link added to Navbar between About and Skills",
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.1",
     date: "2026-03-01",
     summary:

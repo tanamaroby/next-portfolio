@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.2.0] — 2026-03-02
+
+Content update: populated all sections with real personal information, added profile photo, project screenshots, and a new Experience timeline section.
+
+### Added
+
+#### New Sections
+- **Experience section** — vertical timeline with 4 roles (TrieTech, One X Tech, GIC, oCap Management) plus NUS education card at the bottom
+- **Experience link** added to Navbar between About and Skills
+
+### Changed
+
+#### Real Content
+- **Hero** — updated subtitle to "Co-Founder & CTO @ TrieTech · Full-Stack Engineer", real social links (GitHub: `tanamaroby`, LinkedIn: `tanamaroby`, Twitter/X: `SCourtest`, Email: `tanamaroby@gmail.com`), and real description replacing placeholder text
+- **About** — added real profile photo (`Roby.jpg`) via `AvatarImage`, Singapore location pin, real bio paragraphs about TrieTech and NUS, updated interest tags (`Full-Stack Dev`, `SaaS Builder`, `UI/UX Enthusiast`, `Open Source`, `Entrepreneur`, `Team Lead`)
+- **Skills** — replaced all placeholder entries with full real tech stack across 6 categories: Languages, Frontend, Backend, Database, DevOps & Cloud, Tools & Practices
+- **Projects** — replaced all placeholder cards with 5 real projects (`Trivial`, `YogaPets`, `Aether`, `SaveNUS`, `Radomir`), each with project screenshots from `public/`, real descriptions, and an award badge on Aether (1st Place — NUS CS3247 STePS 2020)
+- **Contact** — updated all links to real addresses
+
+---
+
 ## [0.1.1] — 2026-03-01
 
 Developer tooling update: added automated "bump the version" workflow to GitHub Copilot instructions.
