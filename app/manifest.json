@@ -1,13 +1,18 @@
 {
-  "name": "Roby Tanama's Portfolio",
+  "id": "/",
+  "name": "Roby Tanama — Software Engineer",
   "short_name": "Roby Tanama",
-  "description": "Software Engineer Portfolio — Roby Tanama",
-  "start_url": "/",
+  "description": "Portfolio of Roby Tanama — Co-Founder & CTO at TrieTech, Full-Stack Software Engineer based in Singapore.",
+  "start_url": "/?source=pwa",
   "scope": "/",
+  "lang": "en",
+  "dir": "ltr",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "orientation": "portrait",
   "theme_color": "#0a0a0f",
   "background_color": "#0a0a0f",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -34,5 +39,28 @@
       "purpose": "maskable"
     }
   ],
-  "categories": ["portfolio", "productivity"]
+  "shortcuts": [
+    {
+      "name": "View Projects",
+      "short_name": "Projects",
+      "description": "Jump to the projects section",
+      "url": "/?source=pwa#projects",
+      "icons": [{ "src": "/web-app-manifest-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Get in Touch",
+      "short_name": "Contact",
+      "description": "Jump to the contact section",
+      "url": "/?source=pwa#contact",
+      "icons": [{ "src": "/web-app-manifest-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Changelog",
+      "short_name": "Changelog",
+      "description": "See what's new",
+      "url": "/changelog?source=pwa",
+      "icons": [{ "src": "/web-app-manifest-192x192.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["portfolio", "productivity", "developer-tools"]
 }

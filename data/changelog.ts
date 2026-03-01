@@ -19,6 +19,60 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "0.4.0",
+    date: "2026-03-02",
+    summary:
+      "Maximum SEO and enhanced PWA: dynamic OG image, JSON-LD Person schema, sitemap, robots.txt, rich metadata, and expanded web app manifest with shortcuts.",
+    groups: [
+      {
+        title: "SEO",
+        entries: [
+          {
+            type: "added",
+            text: "Dynamic OG image (1200×630) generated at the edge via Next.js ImageResponse — branded with name, role, and colour scheme",
+          },
+          {
+            type: "added",
+            text: "JSON-LD Person schema injected in the root layout — includes name, job title, employer (TrieTech), NUS alumni, address, email, and sameAs social links for Google rich results",
+          },
+          {
+            type: "added",
+            text: "app/sitemap.ts — dynamic sitemap.xml covering / and /changelog with lastModified, changeFrequency, and priority",
+          },
+          {
+            type: "added",
+            text: "app/robots.ts — robots.txt with sitemap reference, allow all, and disallow /api/",
+          },
+          {
+            type: "changed",
+            text: "Root layout metadata: richer title (includes CTO / Full-Stack Engineer), expanded keywords (18 terms), creator/publisher fields, canonical URL, granular googleBot directives (max-image-preview large, max-snippet -1), Twitter site/creator handles (@SCourtest), OG image reference, and formatDetection for address and email",
+          },
+          {
+            type: "changed",
+            text: "Changelog route metadata: added canonical URL, OG tags, and robots directive",
+          },
+          {
+            type: "changed",
+            text: "viewport: themeColor now uses media query array (dark + light) instead of a bare string",
+          },
+        ],
+      },
+      {
+        title: "PWA",
+        entries: [
+          {
+            type: "changed",
+            text: "manifest.json: added id, lang, dir, prefer_related_applications, display_override (window-controls-overlay), start_url with ?source=pwa tracking, and expanded categories",
+          },
+          {
+            type: "added",
+            text: "manifest.json: shortcuts for Projects, Contact, and Changelog — appear in the OS home-screen long-press menu",
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.3.0",
     date: "2026-03-02",
     summary:

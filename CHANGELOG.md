@@ -6,6 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.4.0] — 2026-03-02
+
+Maximum SEO and enhanced PWA: dynamic OG image, JSON-LD Person schema, sitemap, robots.txt, rich metadata, and expanded web app manifest with shortcuts.
+
+### Added
+
+#### SEO
+- **Dynamic OG image** (1200×630) — generated at the edge via `next/og` / `ImageResponse`; branded with name, role, monogram badge, and colour-matched orbs
+- **JSON-LD `Person` schema** injected in the root `<head>` — includes `name`, `jobTitle`, `worksFor` (TrieTech), `alumniOf` (NUS), `address` (Singapore), `email`, and `sameAs` social links (GitHub, LinkedIn, X)
+- **`app/sitemap.ts`** — dynamic `sitemap.xml` covering `/` and `/changelog` with `lastModified`, `changeFrequency`, and `priority`
+- **`app/robots.ts`** — generates `robots.txt` with sitemap reference, `Allow: /`, and `Disallow: /api/`
+
+#### PWA
+- **Manifest shortcuts** — "View Projects", "Get in Touch", and "Changelog" appear in the OS home-screen long-press menu
+
+### Changed
+
+#### SEO
+- **Root layout `metadata`** — title updated to include "Co-Founder & CTO · Full-Stack Engineer"; description now mentions Singapore, TrieTech, and key stack; 18-term keywords array; `creator`, `publisher`, `category` fields added; `canonical` URL set; granular `googleBot` directives (`max-image-preview: large`, `max-snippet: -1`); Twitter `site` and `creator` set to `@SCourtest`; `formatDetection` extended with `address` and `email`
+- **Changelog route metadata** — added `canonical`, `openGraph`, and `robots` fields
+- **`viewport`** — `themeColor` now uses a media-query array instead of a bare string, covering both dark and light preferences
+
+#### PWA
+- **`manifest.json`** — added `id`, `lang`, `dir`, `prefer_related_applications: false`, `display_override` (`window-controls-overlay`), `start_url` with `?source=pwa` tracking parameter, and expanded `categories`
+
+---
+
 ## [0.3.0] — 2026-03-02
 
 Added love-letter — a full-stack social media platform — to the Projects section.

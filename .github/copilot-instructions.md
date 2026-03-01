@@ -199,34 +199,38 @@ import { fadeInUp, staggerContainer, viewportConfig } from "@/lib/motion";
 
 ```
 app/
-  globals.css          — Design token source of truth + custom utilities
-  layout.tsx           — Root layout, metadata, fonts
-  page.tsx             — Landing page (section composition only)
-  changelog/           — Changelog route
-    layout.tsx         — Changelog route metadata
-    page.tsx           — Changelog page component
+  globals.css               — Design token source of truth + custom utilities
+  layout.tsx                — Root layout, metadata, JSON-LD, fonts
+  page.tsx                  — Landing page (section composition only)
+  robots.ts                 — Generates /robots.txt
+  sitemap.ts                — Generates /sitemap.xml
+  opengraph-image.tsx       — Edge-rendered OG image (1200×630)
+  manifest.json             — PWA web app manifest
+  changelog/                — Changelog route
+    layout.tsx              — Changelog route metadata
+    page.tsx                — Changelog page component
 
 components/
-  navbar.tsx           — Site navigation
-  footer.tsx           — Site footer
-  sections/            — Full-page sections
-    hero.tsx           — Landing hero with animated orbs, social links, CTA
-    about.tsx          — Profile photo, stats grid, bio, interest tags
-    experience.tsx     — Vertical timeline of work history + education card
-    skills.tsx         — Technical toolkit grouped by category
-    projects.tsx       — Project cards with images, tech badges, award badges
-    contact.tsx        — Email CTA and social link grid
-  ui/                  — ShadCN-generated primitives (do not edit manually)
+  navbar.tsx                — Site navigation
+  footer.tsx                — Site footer
+  sections/                 — Full-page sections
+    hero.tsx                — Landing hero with animated orbs, social links, CTA
+    about.tsx               — Profile photo, stats grid, bio, interest tags
+    experience.tsx          — Vertical timeline of work history + education card
+    skills.tsx              — Technical toolkit grouped by category
+    projects.tsx            — Project cards with images, tech badges, award badges
+    contact.tsx             — Email CTA and social link grid
+  ui/                       — ShadCN-generated primitives (do not edit manually)
 
 data/
-  changelog.ts         — Structured changelog data (source for /changelog page)
+  changelog.ts              — Structured changelog data (source for /changelog page)
 
 lib/
-  motion.ts            — Framer Motion variant definitions
-  utils.ts             — cn() utility from clsx + tailwind-merge
+  motion.ts                 — Framer Motion variant definitions
+  utils.ts                  — cn() utility from clsx + tailwind-merge
 
-types/                 — TypeScript declarations
-public/                — Static assets (profile photo, project screenshots)
+types/                      — TypeScript declarations
+public/                     — Static assets (profile photo, project screenshots)
 ```
 
 ---
@@ -239,7 +243,55 @@ public/                — Static assets (profile photo, project screenshots)
 
 ---
 
-## 8. Adding a Project
+## 9. SEO & PWA Conventions
+
+### Metadata (`app/layout.tsx`)
+
+- All metadata is defined via Next.js `Metadata` export — never via manual `<meta>` tags in JSX
+- `TITLE` and `DESCRIPTION` constants are defined once and reused across `openGraph`, `twitter`, etc.
+- `metadataBase` must always be set to `BASE_URL` so relative image paths resolve correctly
+- `robots` directive must include `googleBot` with `max-image-preview: "large"` and `max-snippet: -1`
+- `alternates.canonical` must be set on every page layout
+- The Twitter `site` and `creator` are set to `@SCourtest`
+- `viewport.themeColor` uses a media-query array (dark + light) — **never** a bare string
+
+### OG Image (`app/opengraph-image.tsx`)
+
+- Generated at edge runtime using `ImageResponse` from `next/og`
+- Size is `1200 × 630` — do not change
+- Must use only **raw color literals** (not CSS variables) — `ImageResponse` runs outside the browser CSS engine
+- Background colours in the OG image must visually match `DARK_THEME_COLOR` and the primary brand colour
+- Twitter image reuses the same OG image (no separate `twitter-image.tsx` needed)
+
+### Sitemap (`app/sitemap.ts`)
+
+- Add a new entry for every new publicly accessible route
+- Use `"monthly"` `changeFrequency` for the home page, `"weekly"` for content pages
+- Priority: `1` for `/`, `0.7` for content pages
+
+### Robots (`app/robots.ts`)
+
+- Always reference the sitemap URL
+- Default: allow all, disallow `/api/`
+
+### JSON-LD Structured Data
+
+- The `personJsonLd` constant in `app/layout.tsx` provides the `Person` schema — keep it in sync with real contact and social data
+- Inject via `<script type="application/ld+json">` in the `<head>` using `dangerouslySetInnerHTML`
+- Do not add a second `<head>` tag — the existing one in `RootLayout` is the correct injection point
+
+### PWA (`app/manifest.json`)
+
+- `id` field must match `start_url` path (`"/"`)
+- `start_url` must include `?source=pwa` for install-source analytics
+- Shortcuts must have a matching icon entry
+- `prefer_related_applications` must remain `false`
+- `display_override` order: `window-controls-overlay` → `standalone` → `minimal-ui`
+- Adding a new major route → add a corresponding shortcut
+
+---
+
+## 10. Adding a Project
 
 Projects live in the `PROJECTS` constant at the top of `components/sections/projects.tsx`.
 
@@ -267,7 +319,7 @@ interface Project {
 
 ---
 
-## 9. Changelog Maintenance
+## 11. Changelog Maintenance
 
 When releasing a new version:
 
@@ -287,7 +339,7 @@ Use the `ChangelogVersion` type from `data/changelog.ts` for type safety. Group 
 
 ---
 
-## 10. "Bump the Version" Workflow
+## 12. "Bump the Version" Workflow
 
 When the user says **"bump the version"** (or any equivalent like "release", "cut a release", "publish a new version"), Copilot must execute the following steps autonomously — do not ask for confirmation unless a decision is genuinely ambiguous.
 
@@ -342,7 +394,7 @@ Copilot actions:
 
 ---
 
-## 11. TypeScript
+## 13. TypeScript
 
 - All props must be typed with `interface` or `type` — never use `any`
 - Prefer `interface` for component props, `type` for unions and utility types
@@ -350,7 +402,7 @@ Copilot actions:
 
 ---
 
-## 12. Quick Reference Checklist
+## 14. Quick Reference Checklist
 
 Before submitting any code change:
 
@@ -361,3 +413,8 @@ Before submitting any code change:
 - [ ] Animation variants are imported from `lib/motion.ts`
 - [ ] New changelog entries are added to both `data/changelog.ts` and `CHANGELOG.md`
 - [ ] `package.json` version is bumped for any user-visible release
+- [ ] New public routes are added to `app/sitemap.ts`
+- [ ] `alternates.canonical` is set in every new page/route layout
+- [ ] OG image raw colors visually match brand theme (CSS variables are not available in `ImageResponse`)
+- [ ] JSON-LD `personJsonLd` in `layout.tsx` is kept in sync with real contact/social data
+- [ ] New major routes get a corresponding PWA shortcut in `manifest.json`
