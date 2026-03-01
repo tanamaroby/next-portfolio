@@ -23,7 +23,7 @@ export default function Hero() {
       className="relative flex min-h-screen items-center justify-center"
     >
       {/* ── Animated background orbs ── */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div
           className="absolute -top-40 left-1/4 h-130 w-130 rounded-full"
           style={{
