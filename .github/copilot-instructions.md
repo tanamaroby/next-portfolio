@@ -347,13 +347,12 @@ Testimonials live in the `TESTIMONIALS` constant at the top of `components/secti
 ```typescript
 interface Testimonial {
   quote: string; // Full testimonial text (no surrounding quotes — template adds them)
-  name: string;
-  title: string; // Job title
-  company: string;
-  initials: string; // 2-letter initials shown in avatar
+  title: string; // Job title of the reviewer
+  industry: string; // Broad industry descriptor — company name withheld per client request
 }
 ```
 
+- **Never** add a real name or company name — identities are kept confidential; use `title` + `industry` only
 - Keep quotes 1–3 sentences; focus on concrete outcomes or work ethic
 - Order: most recent / most impactful first
 - Always bump the version after adding a testimonial (counts as `added`)

@@ -3,48 +3,40 @@
 import { Card } from "@/components/ui/card";
 import { fadeInUp, staggerContainer, viewportConfig } from "@/lib/motion";
 import { motion } from "framer-motion";
-import { Quote } from "lucide-react";
+import { Lock, Quote } from "lucide-react";
 
 interface Testimonial {
   quote: string;
-  name: string;
+  /** Job title of the reviewer */
   title: string;
-  company: string;
-  initials: string;
+  /** Broad industry — company name withheld per client request */
+  industry: string;
 }
 
 const TESTIMONIALS: Testimonial[] = [
   {
     quote:
       "Roby built our entire workflow automation platform from scratch in under three months. The node-based flow editor alone has saved our operations team 25+ hours a week on manual processes. He anticipated edge cases we hadn't even considered and delivered a system that's been rock-solid in production.",
-    name: "Marcus Chen",
     title: "Operations Director",
-    company: "Meridian Manufacturing",
-    initials: "MC",
+    industry: "Manufacturing",
   },
   {
     quote:
       "We needed a bespoke ERP with inventory management, role-based access, and WhatsApp notifications — all tightly integrated. Roby delivered exactly that, on time and on budget. His architecture decisions have held up as we've grown our team threefold. I'd work with him again without hesitation.",
-    name: "Sarah Lim",
     title: "CEO & Co-Founder",
-    company: "Verdant Logistics",
-    initials: "SL",
+    industry: "Logistics & Supply Chain",
   },
   {
     quote:
       "The platform Roby built for us handles thousands of daily transactions without a hitch. What impressed me most was his communication — he kept us informed at every stage, explained trade-offs clearly, and pushed back constructively when a requirement would have created tech debt. Rare qualities in a contractor.",
-    name: "James Hartley",
     title: "Head of Product",
-    company: "Nexgate Solutions",
-    initials: "JH",
+    industry: "Enterprise SaaS",
   },
   {
     quote:
       "After two failed attempts with other agencies, we finally got it right with TrieTech. Roby re-architected our customer portal from the ground up — cleaner codebase, 10× faster page loads, and a UI our team actually enjoys using. He treats your project like it's his own startup.",
-    name: "Priya Khatri",
     title: "CTO",
-    company: "Ascend FinTech",
-    initials: "PK",
+    industry: "FinTech",
   },
 ];
 
@@ -79,8 +71,8 @@ export default function Testimonials() {
         whileInView="visible"
         viewport={viewportConfig}
       >
-        {TESTIMONIALS.map((t) => (
-          <motion.div key={t.name} variants={fadeInUp}>
+        {TESTIMONIALS.map((t, i) => (
+          <motion.div key={i} variants={fadeInUp}>
             <Card className="flex h-full flex-col gap-5 border-border/50 bg-card p-6 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5">
               {/* Quote icon */}
               <Quote
@@ -95,18 +87,17 @@ export default function Testimonials() {
               </p>
 
               {/* Author */}
-              <div className="flex items-center gap-3 border-t border-border/40 pt-4">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
-                  {t.initials}
-                </div>
+              <div className="flex items-center justify-between gap-3 border-t border-border/40 pt-4">
                 <div>
                   <p className="text-sm font-semibold text-foreground">
-                    {t.name}
+                    {t.title}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {t.title} · {t.company}
-                  </p>
+                  <p className="text-xs text-muted-foreground">{t.industry}</p>
                 </div>
+                <span className="flex shrink-0 items-center gap-1 rounded-full border border-border/50 px-2.5 py-1 text-xs text-muted-foreground">
+                  <Lock size={10} />
+                  Confidential
+                </span>
               </div>
             </Card>
           </motion.div>
