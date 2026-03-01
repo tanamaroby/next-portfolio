@@ -1,0 +1,11 @@
+{
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "components.json"
+      ],
+      "url": "https://ui.shadcn.com/schema.json"
+    }
+  ],
+  "json.schemaDownload.enable": true
+}
