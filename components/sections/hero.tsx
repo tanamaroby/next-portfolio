@@ -20,41 +20,24 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden"
+      className="relative flex min-h-screen items-center justify-center"
     >
       {/* ── Animated background orbs ── */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <motion.div
+        <div
           className="absolute -top-40 left-1/4 h-130 w-130 rounded-full"
           style={{
             background:
               "radial-gradient(circle, var(--hero-orb-1) 0%, transparent 70%)",
             filter: "blur(60px)",
           }}
-          animate={{
-            x: [0, 40, -20, 0],
-            y: [0, -30, 20, 0],
-            scale: [1, 1.08, 0.95, 1],
-          }}
-          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.div
+        <div
           className="absolute -bottom-40 right-1/4 h-120 w-120 rounded-full"
           style={{
             background:
               "radial-gradient(circle, var(--hero-orb-2) 0%, transparent 70%)",
             filter: "blur(60px)",
-          }}
-          animate={{
-            x: [0, -30, 20, 0],
-            y: [0, 30, -20, 0],
-            scale: [1, 0.92, 1.06, 1],
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2,
           }}
         />
         {/* subtle grid */}
@@ -77,8 +60,8 @@ export default function Hero() {
       >
         {/* Badge */}
         <motion.div variants={fadeInUp} className="mb-6 inline-flex">
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
+          <span className="inline-flex items-center gap-2 rounded-full border border-available/30 bg-available/10 px-4 py-1.5 text-xs font-medium text-available glow-available-sm">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-available" />
             Open to consulting &amp; opportunities
           </span>
         </motion.div>
@@ -114,9 +97,10 @@ export default function Hero() {
           variants={fadeInUp}
           className="mx-auto mb-10 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
         >
-          I build fast, accessible, and beautiful web experiences. As co-founder
-          of TrieTech, I help businesses grow through bespoke software solutions
-          — from architecture to final delivery.
+          I build fast, accessible, and beautiful web experiences — specializing
+          in production-ready, industry-grade web applications. As co-founder of
+          TrieTech, I help businesses grow through bespoke software solutions,
+          from architecture to final delivery.
         </motion.p>
 
         {/* CTA Buttons */}

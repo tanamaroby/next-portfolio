@@ -10,6 +10,7 @@
   /* ── Branded / accent colors ── */
   --color-gradient-accent: var(--gradient-accent);
   --color-shadow: var(--shadow-color);
+  --color-available: var(--available);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -88,6 +89,9 @@
   --shadow-color: oklch(0 0 0);
   --hero-orb-1: oklch(0.68 0.24 290 / 18%);
   --hero-orb-2: oklch(0.65 0.22 260 / 14%);
+  --available: oklch(
+    0.65 0.2 142
+  ); /* green — open-to-work indicator, light mode */
 }
 
 .dark {
@@ -127,6 +131,9 @@
   --shadow-color: oklch(0 0 0);
   --hero-orb-1: oklch(0.68 0.24 290 / 18%);
   --hero-orb-2: oklch(0.65 0.22 260 / 14%);
+  --available: oklch(
+    0.72 0.19 142
+  ); /* green — open-to-work indicator, dark mode */
 }
 
 @layer base {
@@ -162,6 +169,11 @@
 @utility glow-primary-sm {
   box-shadow: 0 0 10px 2px
     color-mix(in oklch, var(--color-primary) 25%, transparent);
+}
+
+@utility glow-available-sm {
+  box-shadow: 0 0 8px 2px
+    color-mix(in oklch, var(--color-available) 40%, transparent);
 }
 
 @utility glass {

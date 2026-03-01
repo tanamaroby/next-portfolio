@@ -19,6 +19,44 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "0.6.0",
+    date: "2026-03-02",
+    summary:
+      "UI polish: semi-transparent back-to-top button, scroll-driven hero orb parallax, green glow consulting badge, Next.js added to backend skills, and production web apps tagline.",
+    groups: [
+      {
+        title: "UI & UX",
+        entries: [
+          {
+            type: "changed",
+            text: "Back-to-top button is now semi-transparent (opacity-40) at rest and fades to full opacity on hover, so it no longer obscures page text",
+          },
+          {
+            type: "added",
+            text: "Hero background orbs now move with scroll via Framer Motion useScroll + useTransform — performant transform-only parallax with no layout reflows",
+          },
+          {
+            type: "changed",
+            text: '"Open to consulting" badge now uses the new --available green token with a soft glow (glow-available-sm), making availability clearly visible at a glance',
+          },
+          {
+            type: "changed",
+            text: "Hero description updated to highlight specialization in production-ready, industry-grade web applications",
+          },
+        ],
+      },
+      {
+        title: "Content",
+        entries: [
+          {
+            type: "added",
+            text: "Next.js added to the Backend skills category in the Skills section",
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.5.0",
     date: "2026-03-02",
     summary:

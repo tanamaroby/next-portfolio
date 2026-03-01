@@ -88,6 +88,7 @@ All tokens are defined in `app/globals.css` under `:root` (light mode) and `.dar
 | `--shadow-color`         | `shadow-shadow`                              | Shadows                   |
 | `--hero-orb-1`           | CSS var only — `var(--hero-orb-1)`           | Hero bg orb 1             |
 | `--hero-orb-2`           | CSS var only — `var(--hero-orb-2)`           | Hero bg orb 2             |
+| `--available`            | `text-available`, `bg-available`             | Open-to-work green accent |
 
 ### Chart Tokens (for data visualization only)
 
@@ -129,13 +130,14 @@ className = "text-my-new-token bg-my-new-token/10";
 
 The following custom utilities are defined in `app/globals.css`. Use them instead of duplicating the styles:
 
-| Class             | Purpose                                                          |
-| ----------------- | ---------------------------------------------------------------- |
-| `text-gradient`   | Gradient text from `--color-primary` → `--color-gradient-accent` |
-| `glow-primary`    | Large primary-colored box-shadow glow                            |
-| `glow-primary-sm` | Small primary-colored box-shadow glow                            |
-| `glass`           | Frosted-glass surface (semi-transparent bg + backdrop blur)      |
-| `section-padding` | Consistent vertical + horizontal padding for page sections       |
+| Class               | Purpose                                                          |
+| ------------------- | ---------------------------------------------------------------- |
+| `text-gradient`     | Gradient text from `--color-primary` → `--color-gradient-accent` |
+| `glow-primary`      | Large primary-colored box-shadow glow                            |
+| `glow-primary-sm`   | Small primary-colored box-shadow glow                            |
+| `glow-available-sm` | Small green glow for open-to-work / availability indicators      |
+| `glass`             | Frosted-glass surface (semi-transparent bg + backdrop blur)      |
+| `section-padding`   | Consistent vertical + horizontal padding for page sections       |
 
 **Do not replicate these inline.** If a new reusable visual effect is needed, define it as a `@utility` in `globals.css` using theme tokens — never with raw values.
 
@@ -165,6 +167,7 @@ If the dark background token ever changes, **update this constant** to match.
 - Always import motion variants from `@/lib/motion` — never define inline `variants` objects in component files
 - Use shared `viewportConfig` for all `whileInView` animations
 - Available variants: `fadeInUp`, `fadeIn`, `slideInLeft`, `slideInRight`, `scaleIn`, `staggerContainer`
+- For scroll-driven effects (e.g. parallax), use `useScroll` + `useTransform` from Framer Motion — these update only CSS transforms via RAF and avoid layout reflows
 
 If a new animation is needed, **add it to `lib/motion.ts`** rather than defining it inline.
 

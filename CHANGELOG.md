@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.6.0] — 2026-03-02
+
+UI polish: semi-transparent back-to-top button, scroll-driven hero orb parallax, green glow consulting badge, Next.js added to backend skills, and production web apps tagline.
+
+### Changed
+
+#### UI & UX
+- **Back-to-top button** — now semi-transparent (`opacity-40`) at rest and fades to full opacity on hover, preventing it from obscuring page text
+- **"Open to consulting" badge** — uses the new `--available` green token with a soft green glow (`glow-available-sm`), making availability clearly visible at a glance
+- **Hero description** — updated to highlight specialization in production-ready, industry-grade web applications
+
+### Added
+
+#### UI & UX
+- **Hero orb parallax** — background orbs now move with scroll via Framer Motion `useScroll` + `useTransform`; performant transform-only animation with no layout reflows
+
+#### Content
+- **Next.js** added to the Backend skills category in the Skills section
+
+---
+
 ## [0.5.0] — 2026-03-02
 
 New UI polish: custom 404 page, full-screen loading spinner, scroll-progress bar, and back-to-top button.

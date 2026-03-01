@@ -37,6 +37,7 @@ const SKILL_GROUPS = [
     category: "Backend",
     items: [
       "Node.js",
+      "Next.js",
       "Flask",
       "REST APIs",
       "JWT",
