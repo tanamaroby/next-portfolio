@@ -19,6 +19,57 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "0.7.0",
+    date: "2026-03-02",
+    summary:
+      "SEO & performance: WebP image conversion, WebSite/WebPage JSON-LD @graph, apple-touch-icon meta links, and Twitter card alt text.",
+    groups: [
+      {
+        title: "Performance",
+        entries: [
+          {
+            type: "changed",
+            text: "All project screenshot images converted to WebP (cwebp -q 85 -resize 1200 0) — original PNGs were up to 5 MB; WebP counterparts are 48–64 KB (97–99% reduction)",
+          },
+          {
+            type: "changed",
+            text: "Profile photo (Roby.jpg) converted to WebP — 77 KB → 24 KB",
+          },
+          {
+            type: "changed",
+            text: "All image paths in projects.tsx and about.tsx updated to reference the new .webp files",
+          },
+        ],
+      },
+      {
+        title: "SEO",
+        entries: [
+          {
+            type: "added",
+            text: "JSON-LD restructured as @graph with WebSite and WebPage schemas alongside the existing Person schema, with @id anchors for cross-referencing",
+          },
+          {
+            type: "added",
+            text: "apple-touch-icon meta links added via Next.js metadata icons.apple (192×192 and 512×512)",
+          },
+          {
+            type: "fixed",
+            text: "Twitter card images array now uses object form { url, alt } so the OG image has correct alt text for accessibility audits",
+          },
+        ],
+      },
+      {
+        title: "Docs",
+        entries: [
+          {
+            type: "changed",
+            text: "Copilot instructions updated: WebP conversion workflow added to 'Adding a Project' section, checklist updated to reference structuredDataJsonLd and new image optimisation item",
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.6.0",
     date: "2026-03-02",
     summary:

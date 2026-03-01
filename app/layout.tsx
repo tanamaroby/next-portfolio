@@ -25,44 +25,67 @@ const TITLE = "Roby Tanama — Co-Founder & CTO · Full-Stack Engineer";
 const DESCRIPTION =
   "Portfolio of Roby Tanama — Co-Founder & CTO at TrieTech, Full-Stack Software Engineer based in Singapore. Specialist in Next.js, TypeScript, React, Supabase, and bespoke web application development.";
 
-/** JSON-LD Person schema for Google rich results */
-const personJsonLd = {
+/** JSON-LD structured data — Person + WebSite + WebPage (@graph) */
+const structuredDataJsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: "Roby Tanama",
-  url: BASE_URL,
-  image: `${BASE_URL}/Roby.jpg`,
-  jobTitle: "Co-Founder & CTO",
-  worksFor: {
-    "@type": "Organization",
-    name: "TrieTech Private Limited",
-    url: "https://www.trietech.com/",
-  },
-  alumniOf: {
-    "@type": "EducationalOrganization",
-    name: "National University of Singapore",
-    url: "https://www.nus.edu.sg/",
-  },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "Singapore",
-    addressCountry: "SG",
-  },
-  email: "tanamaroby@gmail.com",
-  sameAs: [
-    "https://github.com/tanamaroby",
-    "https://www.linkedin.com/in/tanamaroby/",
-    "https://x.com/SCourtest",
-  ],
-  knowsAbout: [
-    "Next.js",
-    "React",
-    "TypeScript",
-    "Supabase",
-    "Tailwind CSS",
-    "Full-Stack Development",
-    "Software Consulting",
-    "Web Application Development",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${BASE_URL}/#person`,
+      name: "Roby Tanama",
+      url: BASE_URL,
+      image: `${BASE_URL}/Roby.webp`,
+      jobTitle: "Co-Founder & CTO",
+      worksFor: {
+        "@type": "Organization",
+        name: "TrieTech Private Limited",
+        url: "https://www.trietech.com/",
+      },
+      alumniOf: {
+        "@type": "EducationalOrganization",
+        name: "National University of Singapore",
+        url: "https://www.nus.edu.sg/",
+      },
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Singapore",
+        addressCountry: "SG",
+      },
+      email: "tanamaroby@gmail.com",
+      sameAs: [
+        "https://github.com/tanamaroby",
+        "https://www.linkedin.com/in/tanamaroby/",
+        "https://x.com/SCourtest",
+      ],
+      knowsAbout: [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Supabase",
+        "Tailwind CSS",
+        "Full-Stack Development",
+        "Software Consulting",
+        "Web Application Development",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${BASE_URL}/#website`,
+      url: BASE_URL,
+      name: "Roby Tanama Portfolio",
+      description: DESCRIPTION,
+      author: { "@id": `${BASE_URL}/#person` },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${BASE_URL}/#webpage`,
+      url: BASE_URL,
+      name: TITLE,
+      description: DESCRIPTION,
+      isPartOf: { "@id": `${BASE_URL}/#website` },
+      about: { "@id": `${BASE_URL}/#person` },
+      author: { "@id": `${BASE_URL}/#person` },
+    },
   ],
 };
 
@@ -136,9 +159,23 @@ export const metadata: Metadata = {
     creator: "@SCourtest",
     title: TITLE,
     description: DESCRIPTION,
-    images: ["/opengraph-image.png"],
+    images: [{ url: "/opengraph-image.png", alt: TITLE }],
   },
   manifest: "/manifest.json",
+  icons: {
+    apple: [
+      {
+        url: "/web-app-manifest-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        url: "/web-app-manifest-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -177,7 +214,9 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredDataJsonLd),
+          }}
         />
       </head>
       <body

@@ -40,7 +40,7 @@ const PROJECTS: Project[] = [
       "ShadCN UI",
       "Docker",
     ],
-    image: "/love-letter.png",
+    image: "/love-letter.webp",
     featured: true,
   },
   {
@@ -48,7 +48,7 @@ const PROJECTS: Project[] = [
     description:
       "A comprehensive ERP and workflow management platform built from the ground up. Features a visual node-based flow editor, modular field system, inventory management with Excel import, real-time push notifications, WhatsApp integration, and role-based authorization.",
     tech: ["Next.js", "TypeScript", "ShadCN UI", "Tailwind CSS", "Supabase"],
-    image: "/Trivial.png",
+    image: "/Trivial.webp",
     featured: true,
   },
   {
@@ -56,14 +56,14 @@ const PROJECTS: Project[] = [
     description:
       "Online pet caring platform for both pet owners and caretakers. Pet owners can register pets and bid for caretakers; caretakers can find full-time or part-time employment with automated salary calculation.",
     tech: ["PostgreSQL", "Full-Stack", "Database Design"],
-    image: "/Yogapets.jpg",
+    image: "/Yogapets.webp",
   },
   {
     title: "Aether — Multiplayer Platformer",
     description:
       "A Unity multiplayer platformer with a unique fog-of-war mechanic — players can only see areas they have previously explored. Teams of 4 traverse levels filled with monsters, powerups, and spells.",
     tech: ["Unity", "C#", "Multiplayer", "Game Dev"],
-    image: "/Aether.png",
+    image: "/Aether.webp",
     award: "1st Place — NUS CS3247 STePS 2020",
   },
   {
@@ -71,14 +71,14 @@ const PROJECTS: Project[] = [
     description:
       "An app that helps users manage meal budgets. Takes in a budget and plans meals according to desired timing, with an algorithm to avoid repetition. Built in Java with JavaFX for the GUI.",
     tech: ["Java", "JavaFX", "CI/CD"],
-    image: "/Savenus.jpg",
+    image: "/Savenus.webp",
   },
   {
     title: "Radomir — Task Manager Bot",
     description:
       "A Java CLI-based chatbot for managing tasks and deadlines, featuring a JavaFX GUI. First software engineering project — end-to-end development, testing, and deployment.",
     tech: ["Java", "JavaFX", "CLI"],
-    image: "/Radomir.png",
+    image: "/Radomir.webp",
   },
 ];
 

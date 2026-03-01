@@ -309,7 +309,7 @@ interface Project {
   title: string; // "Name — Subtitle" format
   description: string; // 2–3 sentences: what it does, key features
   tech: string[]; // Tech stack badges, most prominent first
-  image?: string; // Path relative to /public (e.g. "/MyProject.png")
+  image?: string; // Path relative to /public (e.g. "/MyProject.webp") — always convert to WebP first
   github?: string; // Omit if repo is private or NDA
   demo?: string; // Omit if no live URL
   featured?: boolean; // Show "Featured" star badge — use sparingly
@@ -320,7 +320,7 @@ interface Project {
 ### Conventions
 
 - **Ordering** — newest / most significant projects first in the array
-- **Images** — place the screenshot in `public/` using `PascalCase.png` or `kebab-case.png`; reference it as `"/filename.ext"`. Use `next/image` with `fill` + `object-cover` (already wired up in the card)
+- **Images** — convert screenshots to WebP before adding to `public/`: `cwebp -q 85 -resize 1200 0 input.png -o output.webp`. Use `PascalCase.webp` or `kebab-case.webp` naming and reference as `"/filename.webp"`. Use `next/image` with `fill` + `object-cover` (already wired up in the card)
 - **NDA projects** — omit `github` and `demo`; the description can note "details under NDA"
 - **Always bump the version** after adding or meaningfully updating a project (counts as `added` / `changed`)
 
@@ -423,5 +423,6 @@ Before submitting any code change:
 - [ ] New public routes are added to `app/sitemap.ts`
 - [ ] `alternates.canonical` is set in every new page/route layout
 - [ ] OG image raw colors visually match brand theme (CSS variables are not available in `ImageResponse`)
-- [ ] JSON-LD `personJsonLd` in `layout.tsx` is kept in sync with real contact/social data
+- [ ] JSON-LD `structuredDataJsonLd` in `layout.tsx` is kept in sync with real contact/social data
+- [ ] New project images are converted to WebP (`cwebp -q 85 -resize 1200 0`) before being placed in `public/`
 - [ ] New major routes get a corresponding PWA shortcut in `manifest.json`

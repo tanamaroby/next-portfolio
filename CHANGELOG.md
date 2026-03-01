@@ -6,6 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.7.0] — 2026-03-02
+
+SEO & performance: WebP image conversion, WebSite/WebPage JSON-LD @graph, apple-touch-icon meta links, and Twitter card alt text.
+
+### Changed
+
+#### Performance
+- **Project images** — converted to WebP (`cwebp -q 85 -resize 1200 0`); originals were up to 5 MB, WebP counterparts are 48–64 KB (97–99% reduction)
+- **Profile photo** — `Roby.jpg` converted to WebP, 77 KB → 24 KB
+- **Image paths** in `projects.tsx` and `about.tsx` updated to reference `.webp` files
+
+#### Docs
+- **Copilot instructions** — WebP conversion workflow added to "Adding a Project" section; checklist updated to reference `structuredDataJsonLd` and new image optimisation item
+
+### Added
+
+#### SEO
+- **JSON-LD @graph** — `WebSite` and `WebPage` schemas added alongside the existing `Person` schema, all cross-referenced via `@id` anchors
+- **`apple-touch-icon`** — added via Next.js `metadata.icons.apple` (192×192 and 512×512)
+
+### Fixed
+
+#### SEO
+- **Twitter card `images`** — now uses object form `{ url, alt }` so the OG image carries correct alt text for accessibility audits
+
+---
+
 ## [0.6.0] — 2026-03-02
 
 UI polish: semi-transparent back-to-top button, scroll-driven hero orb parallax, green glow consulting badge, Next.js added to backend skills, and production web apps tagline.

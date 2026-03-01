@@ -52,7 +52,7 @@ export default function About() {
             {/* Glow ring */}
             <div className="absolute -inset-1 rounded-full bg-linear-to-br from-primary/40 via-primary/10 to-transparent blur-md" />
             <Avatar className="relative h-40 w-40 border-2 border-primary/30 text-4xl">
-              <AvatarImage src="/Roby.jpg" alt="Roby Tanama" />
+              <AvatarImage src="/Roby.webp" alt="Roby Tanama" />
               <AvatarFallback className="bg-muted text-3xl font-bold text-primary">
                 RT
               </AvatarFallback>
