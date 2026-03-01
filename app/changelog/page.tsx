@@ -16,20 +16,25 @@ export default function ChangelogPage() {
     <div className="min-h-screen bg-background text-foreground">
       {/* ── Top bar ── */}
       <header className="sticky top-0 z-50 glass border-b border-border/50">
-        <div className="mx-auto flex max-w-4xl items-center gap-4 px-6 py-4">
+        <div className="mx-auto flex max-w-4xl items-center gap-3 px-4 py-4 sm:px-6">
           <Link
             href="/"
-            className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            className="flex shrink-0 items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft size={15} />
-            Back to Portfolio
+            <span className="hidden sm:inline">Back to Portfolio</span>
+            <span className="sm:hidden">Back</span>
           </Link>
-          <span className="text-border/60">·</span>
-          <span className="text-sm font-medium text-foreground">Changelog</span>
+          <span className="text-border/60" aria-hidden="true">
+            ·
+          </span>
+          <span className="truncate text-sm font-medium text-foreground">
+            Changelog
+          </span>
         </div>
       </header>
 
-      <main className="mx-auto max-w-4xl px-6 py-16">
+      <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
         {/* ── Page heading ── */}
         <motion.div
           className="mb-16"

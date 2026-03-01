@@ -16,21 +16,21 @@ export default function Footer() {
       whileInView="visible"
       viewport={viewportConfig}
     >
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 sm:flex-row">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
         <p>
           &copy; {year}{" "}
           <span className="font-medium text-foreground">Roby Tanama</span>. All
           rights reserved.
         </p>
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
           <Link
             href="/changelog"
             className="transition-colors hover:text-foreground underline-offset-2 hover:underline"
           >
             Changelog
           </Link>
-          <span aria-hidden="true" className="text-border">
+          <span aria-hidden="true" className="hidden text-border sm:block">
             ·
           </span>
           <p className="flex items-center gap-1.5">
