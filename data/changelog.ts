@@ -19,6 +19,35 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "0.5.0",
+    date: "2026-03-02",
+    summary:
+      "New UI polish: custom 404 page, full-screen loading spinner, scroll-progress bar, and back-to-top button.",
+    groups: [
+      {
+        title: "UI & UX",
+        entries: [
+          {
+            type: "added",
+            text: "Custom 404 page (app/not-found.tsx) — branded with the RT monogram, animated background orbs, gradient 404 heading, and Home / Go Back action buttons",
+          },
+          {
+            type: "added",
+            text: "Full-screen loading spinner (app/loading.tsx) — spinning ring around the RT monogram badge with a pulsing tracking label, shown automatically by Next.js during navigation",
+          },
+          {
+            type: "added",
+            text: "Scroll-progress indicator (components/scroll-progress.tsx) — spring-animated 3px bar fixed at the very top of the viewport, driven by Framer Motion useScroll + useSpring",
+          },
+          {
+            type: "added",
+            text: "Back-to-top button (components/back-to-top.tsx) — floating circular button in the bottom-right corner; appears after 400px of scroll with an animated entrance/exit via Framer Motion AnimatePresence",
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.4.0",
     date: "2026-03-02",
     summary:

@@ -202,6 +202,8 @@ app/
   globals.css               — Design token source of truth + custom utilities
   layout.tsx                — Root layout, metadata, JSON-LD, fonts
   page.tsx                  — Landing page (section composition only)
+  not-found.tsx             — Custom 404 page with animated orbs and branding
+  loading.tsx               — Full-screen loading spinner shown during navigation
   robots.ts                 — Generates /robots.txt
   sitemap.ts                — Generates /sitemap.xml
   opengraph-image.tsx       — Edge-rendered OG image (1200×630)
@@ -213,6 +215,8 @@ app/
 components/
   navbar.tsx                — Site navigation
   footer.tsx                — Site footer
+  scroll-progress.tsx       — Thin branded bar at the top tracking scroll position
+  back-to-top.tsx           — Floating button (bottom-right); appears after 400px scroll
   sections/                 — Full-page sections
     hero.tsx                — Landing hero with animated orbs, social links, CTA
     about.tsx               — Profile photo, stats grid, bio, interest tags

@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.5.0] — 2026-03-02
+
+New UI polish: custom 404 page, full-screen loading spinner, scroll-progress bar, and back-to-top button.
+
+### Added
+
+#### UI & UX
+- **Custom 404 page** (`app/not-found.tsx`) — branded with the RT monogram badge, animated background orbs, gradient `404` heading, and Home / Go Back action buttons
+- **Full-screen loading spinner** (`app/loading.tsx`) — spinning ring around the RT monogram badge with a pulsing "Loading…" label; shown automatically by Next.js during page navigation
+- **Scroll-progress indicator** (`components/scroll-progress.tsx`) — spring-animated 3 px bar fixed at the very top of the viewport, driven by Framer Motion `useScroll` + `useSpring`
+- **Back-to-top button** (`components/back-to-top.tsx`) — floating circular button pinned to the bottom-right corner; appears after 400 px of scroll with a smooth animated entrance/exit via Framer Motion `AnimatePresence`
+
+---
+
 ## [0.4.0] — 2026-03-02
 
 Maximum SEO and enhanced PWA: dynamic OG image, JSON-LD Person schema, sitemap, robots.txt, rich metadata, and expanded web app manifest with shortcuts.
