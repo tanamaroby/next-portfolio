@@ -3,14 +3,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { BLOG_POSTS } from "@/data/blog";
+import { getSortedBlogPosts } from "@/data/blog";
 import { fadeInUp, staggerContainer, viewportConfig } from "@/lib/motion";
 import { motion } from "framer-motion";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 import Link from "next/link";
 
-// Show the 3 most recent posts
-const PREVIEW_POSTS = BLOG_POSTS.slice(0, 3);
+// Show the 3 most recent posts (sorted newest-first)
+const PREVIEW_POSTS = getSortedBlogPosts().slice(0, 3);
 
 export default function BlogPreview() {
   return (

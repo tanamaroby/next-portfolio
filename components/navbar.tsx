@@ -3,11 +3,11 @@
 // Navbar: sticky glass header with mobile drawer, active section indicator, theme toggle
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, Moon, Sun, X } from "lucide-react";
+import { ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -55,6 +55,8 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const [pagesOpen, setPagesOpen] = useState(false);
+  const pagesDropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const isHome = pathname === "/";
 
@@ -63,6 +65,20 @@ export default function Navbar() {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close pages dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        pagesDropdownRef.current &&
+        !pagesDropdownRef.current.contains(e.target as Node)
+      ) {
+        setPagesOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // Performant active section tracking via IntersectionObserver (home only)
@@ -91,6 +107,11 @@ export default function Navbar() {
   }, [isHome]);
 
   const closeMenu = () => setMobileOpen(false);
+
+  // Whether any page link is currently active (for dropdown trigger highlight)
+  const isAnyPageActive = PAGE_LINKS.some(
+    (l) => pathname === l.href || pathname.startsWith(l.href + "/"),
+  );
 
   return (
     <>
@@ -149,41 +170,71 @@ export default function Navbar() {
               })}
             </ul>
 
-            {/* Divider between sections and pages */}
+            {/* Divider */}
             <span
               className="mx-1 h-4 w-px rounded-full bg-border"
               aria-hidden="true"
             />
 
-            {/* Page links */}
-            <ul className="flex items-center gap-1">
-              {PAGE_LINKS.map((link) => {
-                const isActive =
-                  pathname === link.href ||
-                  pathname.startsWith(link.href + "/");
-                return (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className={`group relative px-3 py-2 text-sm font-medium transition-colors duration-200 ${
-                        isActive
-                          ? "text-foreground"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {link.label}
-                      <span
-                        className={`absolute inset-x-3 bottom-0 h-px rounded-full bg-primary transition-transform duration-200 ${
-                          isActive
-                            ? "scale-x-100"
-                            : "scale-x-0 group-hover:scale-x-100"
-                        }`}
-                      />
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+            {/* Pages dropdown */}
+            <div className="relative" ref={pagesDropdownRef}>
+              <button
+                onClick={() => setPagesOpen((v) => !v)}
+                className={`group flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 ${
+                  isAnyPageActive || pagesOpen
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                aria-expanded={pagesOpen}
+                aria-haspopup="true"
+              >
+                More
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-200 ${pagesOpen ? "rotate-180" : ""}`}
+                />
+                <span
+                  className={`absolute inset-x-3 bottom-0 h-px rounded-full bg-primary transition-transform duration-200 ${
+                    isAnyPageActive ? "scale-x-100" : "scale-x-0"
+                  }`}
+                />
+              </button>
+
+              <AnimatePresence>
+                {pagesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    className="absolute right-0 top-full mt-1.5 w-44 overflow-hidden rounded-xl border border-border bg-background shadow-lg shadow-shadow/20"
+                  >
+                    {PAGE_LINKS.map((link) => {
+                      const isActive =
+                        pathname === link.href ||
+                        pathname.startsWith(link.href + "/");
+                      return (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          onClick={() => setPagesOpen(false)}
+                          className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium transition-colors hover:bg-accent hover:text-foreground ${
+                            isActive
+                              ? "bg-primary/10 text-foreground"
+                              : "text-muted-foreground"
+                          }`}
+                        >
+                          {link.label}
+                          {isActive && (
+                            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-primary" />
+                          )}
+                        </Link>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* CTA + theme toggle + mobile toggle */}
@@ -216,7 +267,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed inset-x-0 top-16 z-40 glass border-b border-border px-6 py-4 md:hidden"
+            className="fixed inset-x-0 top-16 z-40 border-b border-border bg-background px-6 py-4 shadow-lg shadow-shadow/10 md:hidden"
           >
             {/* Section links */}
             <p className="mb-1.5 px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60">

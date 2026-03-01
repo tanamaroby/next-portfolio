@@ -51,13 +51,14 @@ export default function About() {
           <div className="relative">
             {/* Glow ring */}
             <div className="absolute -inset-1 rounded-full bg-linear-to-br from-primary/40 via-primary/10 to-transparent blur-md" />
-            {/* Profile photo — next/image with priority for faster LCP */}
-            <div className="relative h-40 w-40 overflow-hidden rounded-full border-2 border-primary/30">
+            {/* Profile photo — next/image with priority for faster LCP; bg-primary/10 shows branded placeholder while loading */}
+            <div className="relative h-40 w-40 overflow-hidden rounded-full border-2 border-primary/30 bg-primary/10">
               <Image
                 src="/Roby.webp"
                 alt="Roby Tanama"
                 fill
                 priority
+                fetchPriority="high"
                 sizes="160px"
                 className="object-cover"
               />

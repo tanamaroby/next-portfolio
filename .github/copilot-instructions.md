@@ -216,7 +216,7 @@ app/
     page.tsx                — Changelog page component
 
 components/
-  navbar.tsx                — Site navigation (active section indicator via IntersectionObserver, theme toggle)
+  navbar.tsx                — Site navigation (SECTION_LINKS anchors + "More" dropdown for PAGE_LINKS, IntersectionObserver active indicator, theme toggle)
   footer.tsx                — Site footer
   providers.tsx             — Client-side ThemeProvider wrapper (next-themes); imported by root layout
   scroll-progress.tsx       — Thin branded bar at the top tracking scroll position
@@ -228,10 +228,12 @@ components/
     skills.tsx              — Technical toolkit grouped by category
     projects.tsx            — Project cards with images, tech badges, filter pills, award badges
     testimonials.tsx        — Client testimonial cards grid
+    blog-preview.tsx        — 3 most recent posts preview grid on the landing page
     contact.tsx             — Email CTA and social link grid
   ui/                       — ShadCN-generated primitives (do not edit manually)
 
 data/
+  blog.ts                   — Blog post data (BLOG_POSTS array) + getSortedBlogPosts() helper
   changelog.ts              — Structured changelog data (source for /changelog page)
 
 lib/
@@ -273,14 +275,26 @@ if (!mounted) return <div className="h-9 w-9" aria-hidden />; // placeholder mai
 
 ---
 
-## 8b. Active Nav Indicator
+## 8b. Navbar Architecture
 
-The navbar uses `IntersectionObserver` — **not** scroll events — to track which section is in view:
+### Desktop
 
-- One `IntersectionObserver` is created per section ID; all are disconnected on cleanup
+- `SECTION_LINKS` — scroll-anchor links rendered inline (About, Experience, Skills, Projects, Testimonials, Contact)
+- `PAGE_LINKS` — full-route links (Blog, Changelog) are **not** rendered inline; they appear inside a **"More" dropdown** to avoid crowding
+- The dropdown is controlled by `pagesOpen` state and a `useRef` click-outside handler
+- When any PAGE_LINK is active, the "More" button shows its underline indicator (`isAnyPageActive`)
+
+### Mobile drawer
+
+- Background is solid `bg-background` (never `glass`) — ensures readability over any page content beneath it
+- Shows both `SECTION_LINKS` and `PAGE_LINKS` as flat lists under labelled headings ("Sections" / "Pages")
+
+### Active indicator (IntersectionObserver)
+
+- One `IntersectionObserver` per section ID; all are disconnected on cleanup
 - `rootMargin: "-40% 0% -60% 0%"` fires when a section occupies the central 20% of the viewport
-- Active state is stored in `activeSection: string`; the matching link renders a full-width underline
-- The same `activeSection` state highlights mobile drawer items with `bg-accent/50`
+- Active state in `activeSection: string`; the matching link renders a full-width underline
+- Mobile drawer highlights active section items with `bg-accent/50`
 
 ---
 
@@ -488,4 +502,5 @@ Before submitting any code change:
 - [ ] JSON-LD `structuredDataJsonLd` in `layout.tsx` is kept in sync with real contact/social data
 - [ ] New project images are converted to WebP (`cwebp -q 85 -resize 1200 0`) before being placed in `public/`
 - [ ] New major routes get a corresponding PWA shortcut in `manifest.json`
-- [ ] New sections added to both `app/page.tsx` and the `NAV_LINKS` array in `components/navbar.tsx`
+- [ ] New home-page sections added to both `app/page.tsx` and the `SECTION_LINKS` array in `components/navbar.tsx`
+- [ ] New blog posts added via `BLOG_POSTS` in `data/blog.ts`; all list rendering uses `getSortedBlogPosts()` (never raw `BLOG_POSTS`)

@@ -606,6 +606,389 @@ const myTheme = themeQuartz.withParams({
       },
     ],
   },
+
+  // ─── 5. DB Connection Pooling ───────────────────────────────────────────────
+  {
+    slug: "database-connection-pooling-serverless",
+    title:
+      "Database Connection Pooling in Serverless: Why Your Next.js App Might Be Exhausting Postgres",
+    description:
+      "Every cold-start serverless function opens a new database connection. At scale, this kills Postgres. Here's how connection pooling — and Supabase's Supavisor — fixes it.",
+    date: "2026-02-25",
+    readTime: 7,
+    tags: ["PostgreSQL", "Supabase", "Next.js", "DevOps"],
+    content: [
+      {
+        type: "p",
+        text: "Postgres has a hard limit on simultaneous connections — typically 100 on a small instance, 500 on a medium one. A traditional Node.js server opens a pool of, say, 10 connections at startup and reuses them across all requests for the lifetime of the process. Serverless changes this contract completely.",
+      },
+      {
+        type: "h2",
+        text: "The Serverless Connection Problem",
+      },
+      {
+        type: "p",
+        text: "In a serverless environment — Vercel Edge Functions, AWS Lambda, or Next.js API routes deployed on Vercel — each function invocation is a separate process. There is no shared connection pool between requests. Each cold start opens a new connection to the database; each function teardown closes it (or more often, forgets to close it). Under moderate traffic, you quickly see errors like:",
+      },
+      {
+        type: "code",
+        lang: "text",
+        text: `FATAL: sorry, too many clients already
+remaining connection slots are reserved for non-replication superuser connections`,
+      },
+      {
+        type: "p",
+        text: "This isn't a code bug — it's a fundamental mismatch between the stateless serverless execution model and Postgres's stateful connection model.",
+      },
+      {
+        type: "h2",
+        text: "What a Connection Pooler Does",
+      },
+      {
+        type: "p",
+        text: "A connection pooler sits between your application and Postgres. Your serverless functions connect to the pooler (which can handle thousands of simultaneous connections cheaply), and the pooler maintains a small, stable set of real Postgres connections that it multiplexes across requests.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Transaction mode: a real Postgres connection is borrowed from the pool for the duration of a single transaction, then returned. This is the correct mode for serverless — supports thousands of app connections multiplexed over tens of real DB connections.",
+          "Session mode: one real connection per client session. Useful for features that require session-level state (advisory locks, `SET LOCAL` settings, prepared statements). Not suitable for serverless due to high connection counts.",
+          "Statement mode: most restrictive — each connection is returned after every statement. Only use when you don't need multi-statement transactions.",
+        ],
+      },
+      {
+        type: "callout",
+        variant: "warning",
+        text: "Transaction mode does not support session-level Postgres features: prepared statements, advisory locks, and `SET LOCAL` variables are reset after each transaction. If you use Prisma with transaction mode, set `pgbouncer=true` in your connection string and avoid prepared statements.",
+      },
+      {
+        type: "h2",
+        text: "Supabase Supavisor: Built-in Pooling",
+      },
+      {
+        type: "p",
+        text: "Supabase replaced PgBouncer with Supavisor — their own Elixir-based connection pooler — in 2024. Supavisor supports both transaction mode (port 6543) and session mode (port 5432), and it's configured automatically for every Supabase project. You don't need to run or manage your own pooler.",
+      },
+      {
+        type: "code",
+        lang: "text",
+        text: `# Direct connection (session mode — for migrations, long-running scripts)
+postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres
+
+# Pooled connection (transaction mode — for serverless / Next.js API routes)
+postgresql://postgres.[PROJECT]:[PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true`,
+      },
+      {
+        type: "p",
+        text: "The rule is simple: use the **pooled connection string (port 6543)** for your application runtime, and the **direct connection string (port 5432)** only for database migrations (where you need DDL statements and session-level features).",
+      },
+      {
+        type: "h2",
+        text: "Configuring Prisma for Supavisor",
+      },
+      {
+        type: "p",
+        text: "Prisma requires two separate connection strings: one for migrations (direct) and one for the runtime query engine (pooled). You configure this in your `schema.prisma` and `.env`:",
+      },
+      {
+        type: "code",
+        lang: "prisma",
+        text: `// schema.prisma
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")        // pooled — used at runtime
+  directUrl = env("DIRECT_URL")          // direct — used for migrations
+}`,
+      },
+      {
+        type: "code",
+        lang: "bash",
+        text: `# .env
+DATABASE_URL="postgresql://postgres.[ref]:[pw]@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
+DIRECT_URL="postgresql://postgres:[pw]@db.[ref].supabase.co:5432/postgres"`,
+      },
+      {
+        type: "callout",
+        variant: "tip",
+        text: "Set `connection_limit=1` in your pooled DATABASE_URL when running in serverless. Prisma's internal pool becomes redundant when Supavisor is handling pooling — a limit of 1 prevents your function from trying to open multiple connections and exceeding the pool.",
+      },
+      {
+        type: "h2",
+        text: "Monitoring Connection Usage",
+      },
+      {
+        type: "p",
+        text: "Supabase Dashboard → Database → Connection Pooling shows real-time connection counts. A useful Postgres query to check active connections yourself:",
+      },
+      {
+        type: "code",
+        lang: "sql",
+        text: `SELECT
+  count(*) AS total,
+  count(*) FILTER (WHERE state = 'active') AS active,
+  count(*) FILTER (WHERE state = 'idle') AS idle,
+  count(*) FILTER (WHERE wait_event_type = 'Lock') AS waiting
+FROM pg_stat_activity
+WHERE datname = 'postgres';`,
+      },
+      {
+        type: "h2",
+        text: "Quick Checklist",
+      },
+      {
+        type: "ol",
+        items: [
+          "Use the pooled connection string (port 6543) for all Next.js API routes and Server Actions.",
+          "Use the direct connection string (port 5432) only for `prisma migrate deploy` in CI/CD.",
+          "Set `connection_limit=1` in the pooled DATABASE_URL if using Prisma.",
+          "Add `?pgbouncer=true` to the pooled URL if using Prisma — required to disable prepared statements.",
+          "Never commit either connection string to version control — use environment variables in Vercel project settings.",
+          "Monitor pg_stat_activity if connections spike — check for missing `await` or unclosed DB clients in your code.",
+        ],
+      },
+    ],
+  },
+
+  // ─── 6. Supabase Patterns ───────────────────────────────────────────────────
+  {
+    slug: "supabase-rls-realtime-productionpatterns",
+    title:
+      "Supabase in Production: Row-Level Security, Realtime, and Patterns That Actually Scale",
+    description:
+      "Supabase is more than a Firebase alternative. Here's how to use RLS policies, Realtime channels, and Edge Functions as load-bearing parts of a production system.",
+    date: "2026-03-01",
+    readTime: 10,
+    tags: ["Supabase", "PostgreSQL", "TypeScript", "Architecture"],
+    content: [
+      {
+        type: "p",
+        text: "Supabase is a managed Postgres platform with a generous free tier and a frontend-friendly JavaScript client. Many developers discover it as a quick backend-as-a-service and don't look much deeper. That's a mistake — the features that make Supabase genuinely powerful for production systems are Row-Level Security, Realtime subscriptions, and Edge Functions. Here's what I've learned deploying it across several commercial projects.",
+      },
+      {
+        type: "h2",
+        text: "Row-Level Security Is Your Access Control Layer",
+      },
+      {
+        type: "p",
+        text: "Row-Level Security (RLS) is a native Postgres feature. When enabled on a table, every query — including those from the Supabase JavaScript client — is automatically filtered through policies that run in the database engine. The key insight: RLS moves access control out of your application code and into the database, where it can't be bypassed by a bug in your API layer.",
+      },
+      {
+        type: "code",
+        lang: "sql",
+        text: `-- Enable RLS on the table
+ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+
+-- Users can only see their own orders
+CREATE POLICY "users_see_own_orders"
+  ON orders FOR SELECT
+  USING (auth.uid() = user_id);
+
+-- Users can only insert orders for themselves
+CREATE POLICY "users_insert_own_orders"
+  ON orders FOR INSERT
+  WITH CHECK (auth.uid() = user_id);`,
+      },
+      {
+        type: "p",
+        text: "With these policies in place, a client calling `supabase.from('orders').select('*')` only ever receives rows where `user_id` matches the authenticated JWT. No application-layer filter is required, and no developer can accidentally forget to add one.",
+      },
+      {
+        type: "callout",
+        variant: "warning",
+        text: "Always call `supabase.from('table').select()` from the authenticated client (initialized with the user's JWT), never the service-role key, in browser code. The service-role key bypasses all RLS policies — it should only be used in trusted server-side contexts like Edge Functions.",
+      },
+      {
+        type: "h2",
+        text: "Multi-Tenant RLS with Organisations",
+      },
+      {
+        type: "p",
+        text: "For SaaS products with team workspaces, you need a multi-tenant model: users belong to organisations, and permissions depend on both the user's identity and their role within the organisation. The pattern I use:",
+      },
+      {
+        type: "code",
+        lang: "sql",
+        text: `-- Helper: returns the org IDs the current user belongs to
+CREATE OR REPLACE FUNCTION auth.user_org_ids()
+RETURNS uuid[] AS $$
+  SELECT array_agg(organisation_id)
+  FROM organisation_members
+  WHERE user_id = auth.uid()
+$$ LANGUAGE sql SECURITY DEFINER STABLE;
+
+-- Org-scoped read policy
+CREATE POLICY "org_members_read_projects"
+  ON projects FOR SELECT
+  USING (organisation_id = ANY(auth.user_org_ids()));`,
+      },
+      {
+        type: "p",
+        text: "Marking the helper function `SECURITY DEFINER STABLE` is important: it runs with the definer's privileges (bypassing RLS on the `organisation_members` table) and its result is cached within the transaction, avoiding redundant queries for each row evaluated.",
+      },
+      {
+        type: "h2",
+        text: "Realtime: Broadcast vs Postgres Changes",
+      },
+      {
+        type: "p",
+        text: "Supabase Realtime has two distinct mechanisms that are often confused:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Postgres Changes**: subscribes to a PostgreSQL logical replication stream. Every INSERT, UPDATE, or DELETE on a table emits an event to subscribed clients. Good for syncing data state — but the payload only includes changed rows, not the full result of a view or join.",
+          "**Broadcast**: a low-latency pub/sub channel where clients can publish arbitrary JSON payloads to a named channel. No database persistence. Good for ephemeral collaboration events — cursor positions, typing indicators, presence.",
+        ],
+      },
+      {
+        type: "code",
+        lang: "typescript",
+        text: `import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(url, anonKey);
+
+// Postgres Changes — receive DB mutations in real time
+const channel = supabase
+  .channel("inventory-changes")
+  .on(
+    "postgres_changes",
+    { event: "*", schema: "public", table: "inventory" },
+    (payload) => console.log("Row changed:", payload),
+  )
+  .subscribe();
+
+// Broadcast — ephemeral pub/sub (e.g. live cursor positions)
+const presenceChannel = supabase
+  .channel("room:project-123")
+  .on("broadcast", { event: "cursor" }, ({ payload }) => {
+    updateCursor(payload.userId, payload.x, payload.y);
+  })
+  .subscribe();
+
+// Publish a cursor event
+await presenceChannel.send({
+  type: "broadcast",
+  event: "cursor",
+  payload: { userId: currentUserId, x: 340, y: 120 },
+});`,
+      },
+      {
+        type: "callout",
+        variant: "tip",
+        text: "Postgres Changes respects RLS — a subscribed client only receives events for rows they're allowed to see. Broadcast is unfiltered within a channel; you control access at the channel subscription level.",
+      },
+      {
+        type: "h2",
+        text: "Edge Functions for Server-Side Logic",
+      },
+      {
+        type: "p",
+        text: "Supabase Edge Functions are Deno-based serverless functions deployed globally. They run in the same network region as your Supabase project, which means database round-trips are sub-millisecond. The primary use cases I reach for them:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Webhooks that must verify a signature and then mutate the database with the service-role key (e.g. Stripe webhooks updating subscription status).",
+          "Scheduled jobs via Supabase Cron — run a function on a schedule to send digest emails, expire stale records, or sync external APIs.",
+          "Any operation that requires the service-role key or a secret, but should not run in browser client code.",
+        ],
+      },
+      {
+        type: "code",
+        lang: "typescript",
+        text: `// supabase/functions/stripe-webhook/index.ts
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import Stripe from "https://esm.sh/stripe@14";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!);
+const supabase = createClient(
+  Deno.env.get("SUPABASE_URL")!,
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, // bypasses RLS — safe inside Edge Function
+);
+
+serve(async (req) => {
+  const sig = req.headers.get("stripe-signature")!;
+  const body = await req.text();
+
+  const event = stripe.webhooks.constructEvent(
+    body,
+    sig,
+    Deno.env.get("STRIPE_WEBHOOK_SECRET")!,
+  );
+
+  if (event.type === "customer.subscription.updated") {
+    const sub = event.data.object as Stripe.Subscription;
+    await supabase
+      .from("subscriptions")
+      .upsert({ stripe_subscription_id: sub.id, status: sub.status });
+  }
+
+  return new Response(JSON.stringify({ received: true }), { status: 200 });
+});`,
+      },
+      {
+        type: "h2",
+        text: "Storage + RLS for Private Files",
+      },
+      {
+        type: "p",
+        text: "Supabase Storage buckets support RLS policies too. Mark a bucket as private and define policies to control who can upload or download objects. The storage path convention I use for user-scoped files: `{user_id}/{filename}` — then a single policy covers all user files without per-file ACLs.",
+      },
+      {
+        type: "code",
+        lang: "sql",
+        text: `-- Allow users to read only their own files in the "documents" bucket
+CREATE POLICY "users_read_own_files"
+  ON storage.objects FOR SELECT
+  USING (
+    bucket_id = 'documents'
+    AND (storage.foldername(name))[1] = auth.uid()::text
+  );`,
+      },
+      {
+        type: "h2",
+        text: "Performance: Generated Columns and Indexes",
+      },
+      {
+        type: "p",
+        text: "Since Supabase is just Postgres, all the standard performance tools apply. Two that pay off quickly in product work:",
+      },
+      {
+        type: "ul",
+        items: [
+          "**Generated columns**: store a computed value (e.g. `full_name = first_name || ' ' || last_name`) as a real column. Queries can filter and sort on it without re-computing per row, and you can index it.",
+          "**Partial indexes**: an index with a WHERE clause. If you frequently query `orders WHERE status = 'pending'`, a partial index on that subset is far smaller and faster than a full-table index on `status`.",
+        ],
+      },
+      {
+        type: "code",
+        lang: "sql",
+        text: `-- Generated column for fast full-name search
+ALTER TABLE profiles
+  ADD COLUMN full_name text GENERATED ALWAYS AS
+    (first_name || ' ' || last_name) STORED;
+CREATE INDEX profiles_full_name_idx ON profiles USING gin(to_tsvector('english', full_name));
+
+-- Partial index for pending orders only
+CREATE INDEX orders_pending_idx ON orders (created_at DESC)
+  WHERE status = 'pending';`,
+      },
+      {
+        type: "h2",
+        text: "What Supabase Is Not",
+      },
+      {
+        type: "p",
+        text: "Supabase is not a magic scalability layer. The free tier pauses projects after one week of inactivity — unacceptable for production. The Pro plan ($25/month) keeps projects active and raises connection limits. For high-traffic applications you'll eventually need to right-size the compute add-on and tune Supavisor's pool size. It's still Postgres under the hood: slow queries need indexes, schema design decisions are permanent in ways that schema-less databases forgive, and migrations require care.",
+      },
+      {
+        type: "callout",
+        variant: "note",
+        text: "Supabase's value proposition is that it gives you a production-grade Postgres backend — with auth, storage, realtime, and edge functions — without operating infrastructure. For most product teams and consulting projects, that trade-off is excellent.",
+      },
+    ],
+  },
 ];
 
 /** Lookup a post by slug — returns undefined if not found */
@@ -616,4 +999,11 @@ export function getBlogPost(slug: string): BlogPost | undefined {
 /** All post slugs — used for static generation */
 export function getAllBlogSlugs(): string[] {
   return BLOG_POSTS.map((p) => p.slug);
+}
+
+/** Posts sorted newest-first — use this for all list rendering */
+export function getSortedBlogPosts(): BlogPost[] {
+  return [...BLOG_POSTS].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
 }

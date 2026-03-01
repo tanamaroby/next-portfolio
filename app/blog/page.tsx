@@ -6,11 +6,13 @@ import Navbar from "@/components/navbar";
 import ScrollProgress from "@/components/scroll-progress";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { BLOG_POSTS } from "@/data/blog";
+import { getSortedBlogPosts } from "@/data/blog";
 import { fadeInUp, staggerContainer } from "@/lib/motion";
 import { motion } from "framer-motion";
 import { Calendar, Clock } from "lucide-react";
 import Link from "next/link";
+
+const SORTED_POSTS = getSortedBlogPosts();
 
 export default function BlogPage() {
   return (
@@ -44,7 +46,7 @@ export default function BlogPage() {
           initial="hidden"
           animate="visible"
         >
-          {BLOG_POSTS.map((post) => (
+          {SORTED_POSTS.map((post) => (
             <motion.div key={post.slug} variants={fadeInUp}>
               <Link href={`/blog/${post.slug}`} className="group block">
                 <Card className="transition-all duration-200 hover:border-primary/50 hover:shadow-md hover:shadow-primary/5">

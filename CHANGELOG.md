@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.0.0] — 2026-03-02
+
+Navbar More dropdown, opaque mobile drawer, smarter blog sorting, two new posts on database pooling and Supabase production patterns, and avatar load improvement.
+
+### Changed
+
+#### Navigation
+- **Blog + Changelog → "More" dropdown** on the desktop navbar — reduces crowding on smaller desktop widths
+- **Mobile drawer** background changed from semi-transparent glass to solid `bg-background` — text is now legible against any page content beneath the menu
+
+#### Performance
+- Profile photo container in About section now has `bg-primary/10` as a branded placeholder shown while the WebP loads; `fetchPriority="high"` added alongside the existing `priority` prop
+
+### Added
+
+#### Blog
+- `getSortedBlogPosts()` utility exported from `data/blog.ts` — blog list page and homepage preview now always display posts newest-first
+- **New post**: *Database Connection Pooling in Serverless* — covers Postgres connection exhaustion in serverless, Supabase Supavisor (port 6543 vs 5432), Prisma dual-URL config, and connection monitoring
+- **New post**: *Supabase in Production* — covers Row-Level Security patterns, multi-tenant RLS with org membership helpers, Realtime Broadcast vs Postgres Changes, Edge Functions, Storage RLS policies, and performance tips
+
+---
+
 ## [0.9.0] — 2026-03-02
 
 Added /blog section with 4 posts, blog preview on landing page, restructured navbar into section/page groups, updated domain to tanamaroby.com, and improved LCP with next/image priority on profile photo.

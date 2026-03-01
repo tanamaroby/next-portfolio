@@ -19,6 +19,53 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "1.0.0",
+    date: "2026-03-02",
+    summary:
+      "Navbar More dropdown, opaque mobile drawer, smarter blog sorting, two new posts on database pooling and Supabase production patterns, and avatar load improvement.",
+    groups: [
+      {
+        title: "Navigation",
+        entries: [
+          {
+            type: "changed",
+            text: "Blog and Changelog links compressed into a 'More' dropdown on the desktop navbar — reduces crowding on smaller desktop widths",
+          },
+          {
+            type: "fixed",
+            text: "Mobile drawer background changed from semi-transparent glass to solid bg-background — text is now legible against any page content beneath the menu",
+          },
+        ],
+      },
+      {
+        title: "Blog",
+        entries: [
+          {
+            type: "added",
+            text: "getSortedBlogPosts() utility exported from data/blog.ts — blog list page and homepage preview now always display posts newest-first",
+          },
+          {
+            type: "added",
+            text: "New post: 'Database Connection Pooling in Serverless' — covers Postgres connection exhaustion in serverless, Supabase Supavisor (port 6543 vs 5432), Prisma dual-URL config, and connection monitoring",
+          },
+          {
+            type: "added",
+            text: "New post: 'Supabase in Production' — covers Row-Level Security patterns, multi-tenant RLS with org membership helpers, Realtime Broadcast vs Postgres Changes, Edge Functions, Storage RLS policies, and performance tips",
+          },
+        ],
+      },
+      {
+        title: "Performance",
+        entries: [
+          {
+            type: "changed",
+            text: "Profile photo container in About section now has bg-primary/10 as a branded placeholder shown while the WebP loads; fetchPriority='high' added alongside the existing priority prop",
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.9.0",
     date: "2026-03-02",
     summary:
