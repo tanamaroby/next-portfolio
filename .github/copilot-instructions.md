@@ -253,7 +253,61 @@ Use the `ChangelogVersion` type from `data/changelog.ts` for type safety. Group 
 
 ---
 
-## 9. TypeScript
+## 9. "Bump the Version" Workflow
+
+When the user says **"bump the version"** (or any equivalent like "release", "cut a release", "publish a new version"), Copilot must execute the following steps autonomously — do not ask for confirmation unless a decision is genuinely ambiguous.
+
+### Step 1 — Collate all changes since the last release
+
+1. Run `git log <last-tag>..HEAD --oneline` (or `git log --oneline` if no tags exist) to list every commit since the previous release.
+2. Cross-reference the commits with any unstaged/staged file changes visible in the working tree.
+3. Inspect changed files to infer **what** changed (new components, bug fixes, refactors, etc.).
+4. Group the changes under the correct `ChangeType` categories: `added`, `changed`, `fixed`, `removed`, `security`.
+
+### Step 2 — Determine the new version number
+
+Apply **semantic versioning** (`MAJOR.MINOR.PATCH`) against the current version in `package.json`:
+
+| Condition                                              | Bump  |
+| ------------------------------------------------------ | ----- |
+| Breaking change or incompatible API/behavior change    | MAJOR |
+| New user-visible feature (`added`)                     | MINOR |
+| Bug fixes, refactors, or small `changed`/`fixed` items | PATCH |
+
+When multiple conditions apply, use the highest applicable bump.
+
+### Step 3 — Update all three release artifacts atomically
+
+Make all three edits in a single pass:
+
+1. **`data/changelog.ts`** — prepend a new `ChangelogVersion` object at the top of the `CHANGELOG` array. Use today's date (`YYYY-MM-DD`), the new version string, a concise one-sentence `summary`, and the grouped `ChangeEntry` list from Step 1.
+2. **`CHANGELOG.md`** — prepend a matching Markdown section at the top of the file (below the `# Changelog` heading if present), mirroring the same content.
+3. **`package.json`** — update `"version"` to the new version string.
+
+### Step 4 — Verify
+
+After editing, confirm:
+
+- The new version in `package.json` matches the version in the new `CHANGELOG` entry.
+- `CHANGELOG.md` and `data/changelog.ts` are in sync.
+- No other `version` references (e.g. `app/layout.tsx` metadata) are stale — update them if found.
+
+### Example
+
+```
+User: bump the version
+
+Copilot actions:
+1. git log v0.1.0..HEAD --oneline  →  finds 3 commits (new skills section, fix navbar z-index, update about copy)
+2. Determines bump: new section = MINOR  →  0.1.0 → 0.2.0
+3. Prepends entry to data/changelog.ts
+4. Prepends section to CHANGELOG.md
+5. Updates package.json "version": "0.2.0"
+```
+
+---
+
+## 10. TypeScript
 
 - All props must be typed with `interface` or `type` — never use `any`
 - Prefer `interface` for component props, `type` for unions and utility types
@@ -261,7 +315,7 @@ Use the `ChangelogVersion` type from `data/changelog.ts` for type safety. Group 
 
 ---
 
-## 10. Quick Reference Checklist
+## 11. Quick Reference Checklist
 
 Before submitting any code change:
 

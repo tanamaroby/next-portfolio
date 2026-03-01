@@ -19,6 +19,23 @@ export interface ChangelogVersion {
 
 export const CHANGELOG: ChangelogVersion[] = [
   {
+    version: "0.1.1",
+    date: "2026-03-01",
+    summary:
+      'Developer tooling update: added automated "bump the version" workflow to GitHub Copilot instructions.',
+    groups: [
+      {
+        title: "Developer Tooling",
+        entries: [
+          {
+            type: "added",
+            text: '"Bump the Version" workflow in Copilot instructions — collates git commits since last release, determines semver bump, and atomically updates data/changelog.ts, CHANGELOG.md, and package.json',
+          },
+        ],
+      },
+    ],
+  },
+  {
     version: "0.1.0",
     date: "2026-03-01",
     summary:

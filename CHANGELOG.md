@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.1.1] — 2026-03-01
+
+Developer tooling update: added automated "bump the version" workflow to GitHub Copilot instructions.
+
+### Added
+
+#### Developer Tooling
+- **"Bump the Version" workflow** in `.github/copilot-instructions.md` — when triggered, Copilot collates git commits since the last release, determines the correct semver bump, and atomically updates `data/changelog.ts`, `CHANGELOG.md`, and `package.json`
+
+---
+
 ## [0.1.0] — 2026-03-01
 
 Initial public release of the portfolio. Built from the ground up with Next.js 16, Tailwind CSS v4, ShadCN UI, and Framer Motion.
