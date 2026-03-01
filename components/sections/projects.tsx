@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/card";
 import { fadeInUp, staggerContainer, viewportConfig } from "@/lib/motion";
 import { motion } from "framer-motion";
-import { ExternalLink, Github, Star } from "lucide-react";
+import { ExternalLink, Github, Star, Trophy } from "lucide-react";
+import Image from "next/image";
 
 interface Project {
   title: string;
@@ -21,41 +22,48 @@ interface Project {
   github?: string;
   demo?: string;
   featured?: boolean;
+  award?: string;
+  image?: string;
 }
 
 const PROJECTS: Project[] = [
   {
-    title: "[Project Name]",
+    title: "Trivial — ERP / Workflow Platform",
     description:
-      "[Placeholder — describe what this project does, the problem it solves, and any interesting technical challenges you tackled.]",
-    tech: ["Next.js", "TypeScript", "PostgreSQL"],
-    github: "#",
-    demo: "#",
+      "A comprehensive ERP and workflow management platform built from the ground up. Features a visual node-based flow editor, modular field system, inventory management with Excel import, real-time push notifications, WhatsApp integration, and role-based authorization.",
+    tech: ["Next.js", "TypeScript", "ShadCN UI", "Tailwind CSS", "Supabase"],
+    image: "/Trivial.png",
     featured: true,
   },
   {
-    title: "[Project Name]",
+    title: "YogaPets — Pet-Caring Platform",
     description:
-      "[Placeholder — describe what this project does, the problem it solves, and any interesting technical challenges you tackled.]",
-    tech: ["React", "Node.js", "MongoDB"],
-    github: "#",
-    demo: "#",
+      "Online pet caring platform for both pet owners and caretakers. Pet owners can register pets and bid for caretakers; caretakers can find full-time or part-time employment with automated salary calculation.",
+    tech: ["PostgreSQL", "Full-Stack", "Database Design"],
+    image: "/Yogapets.jpg",
     featured: true,
   },
   {
-    title: "[Project Name]",
+    title: "Aether — Multiplayer Platformer",
     description:
-      "[Placeholder — describe what this project does, the problem it solves, and any interesting technical challenges you tackled.]",
-    tech: ["Python", "FastAPI", "Redis"],
-    github: "#",
+      "A Unity multiplayer platformer with a unique fog-of-war mechanic — players can only see areas they have previously explored. Teams of 4 traverse levels filled with monsters, powerups, and spells.",
+    tech: ["Unity", "C#", "Multiplayer", "Game Dev"],
+    image: "/Aether.png",
+    award: "1st Place — NUS CS3247 STePS 2020",
   },
   {
-    title: "[Project Name]",
+    title: "SaveNUS — Budget Management App",
     description:
-      "[Placeholder — describe what this project does, the problem it solves, and any interesting technical challenges you tackled.]",
-    tech: ["Vue.js", "Tailwind CSS", "Supabase"],
-    github: "#",
-    demo: "#",
+      "An app that helps users manage meal budgets. Takes in a budget and plans meals according to desired timing, with an algorithm to avoid repetition. Built in Java with JavaFX for the GUI.",
+    tech: ["Java", "JavaFX", "CI/CD"],
+    image: "/Savenus.jpg",
+  },
+  {
+    title: "Radomir — Task Manager Bot",
+    description:
+      "A Java CLI-based chatbot for managing tasks and deadlines, featuring a JavaFX GUI. First software engineering project — end-to-end development, testing, and deployment.",
+    tech: ["Java", "JavaFX", "CLI"],
+    image: "/Radomir.png",
   },
 ];
 
@@ -96,7 +104,21 @@ export default function Projects() {
             whileHover={{ y: -4, transition: { duration: 0.2 } }}
             className="group"
           >
-            <Card className="flex h-full flex-col border-border/50 bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5">
+            <Card className="flex h-full flex-col border-border/50 bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 overflow-hidden">
+              {/* Project image */}
+              {project.image && (
+                <div className="relative h-44 w-full overflow-hidden border-b border-border/40">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-card/60 to-transparent" />
+                </div>
+              )}
+
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle className="text-lg font-semibold group-hover:text-primary transition-colors">
@@ -109,6 +131,12 @@ export default function Projects() {
                     </Badge>
                   )}
                 </div>
+                {project.award && (
+                  <p className="flex items-center gap-1.5 text-xs font-medium text-primary/80">
+                    <Trophy size={11} />
+                    {project.award}
+                  </p>
+                )}
                 <CardDescription className="text-sm leading-relaxed text-muted-foreground">
                   {project.description}
                 </CardDescription>
@@ -183,7 +211,7 @@ export default function Projects() {
           asChild
         >
           <a
-            href="https://github.com/robytanama"
+            href="https://github.com/tanamaroby"
             target="_blank"
             rel="noopener noreferrer"
           >

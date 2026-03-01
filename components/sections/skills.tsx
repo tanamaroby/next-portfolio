@@ -12,7 +12,15 @@ import { motion } from "framer-motion";
 const SKILL_GROUPS = [
   {
     category: "Languages",
-    items: ["TypeScript", "JavaScript", "Python", "[Add Language]"],
+    items: [
+      "TypeScript",
+      "JavaScript (ES6+)",
+      "Python",
+      "Java",
+      "C++",
+      "HTML5",
+      "CSS3",
+    ],
   },
   {
     category: "Frontend",
@@ -20,25 +28,40 @@ const SKILL_GROUPS = [
       "React",
       "Next.js",
       "Tailwind CSS",
+      "ShadCN UI",
       "Framer Motion",
-      "[Add Framework]",
+      "Docusaurus",
     ],
   },
   {
     category: "Backend",
-    items: ["Node.js", "Express", "REST APIs", "GraphQL", "[Add Tool]"],
+    items: [
+      "Node.js",
+      "Flask",
+      "REST APIs",
+      "JWT",
+      "Auth Middleware",
+      "Edge Functions",
+    ],
   },
   {
     category: "Database",
-    items: ["PostgreSQL", "MongoDB", "Redis", "[Add DB]"],
+    items: ["PostgreSQL", "Supabase", "RLS Policies", "Query Optimization"],
   },
   {
     category: "DevOps & Cloud",
-    items: ["Docker", "GitHub Actions", "Vercel", "[Add Platform]"],
+    items: [
+      "Docker",
+      "GitHub Actions",
+      "Vercel",
+      "Heroku",
+      "Google App Engine",
+      "Linux",
+    ],
   },
   {
-    category: "Tools",
-    items: ["Git", "VS Code", "Figma", "[Add Tool]"],
+    category: "Tools & Practices",
+    items: ["Git", "ESLint", "Prettier", "JSDoc", "Sprint Planning", "CI/CD"],
   },
 ];
 
@@ -88,11 +111,7 @@ export default function Skills() {
                   <Badge
                     key={skill}
                     variant="secondary"
-                    className={`border px-3 py-1 text-sm font-medium transition-colors ${
-                      skill.startsWith("[")
-                        ? "border-dashed border-border/40 text-muted-foreground/50 italic"
-                        : "border-border/40 bg-secondary text-secondary-foreground hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
-                    }`}
+                    className="border border-border/40 bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground transition-colors hover:border-primary/40 hover:bg-primary/10 hover:text-primary"
                   >
                     {skill}
                   </Badge>

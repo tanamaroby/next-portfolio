@@ -12,31 +12,31 @@ import { ArrowUpRight, Github, Linkedin, Mail, Twitter } from "lucide-react";
 
 const CONTACT_LINKS = [
   {
-    href: "mailto:hello@robytanama.dev",
+    href: "mailto:tanamaroby@gmail.com",
     icon: Mail,
     label: "Email",
-    value: "hello@robytanama.dev",
+    value: "tanamaroby@gmail.com",
     description: "Drop me a message",
   },
   {
-    href: "https://linkedin.com/in/robytanama",
+    href: "https://www.linkedin.com/in/tanamaroby/",
     icon: Linkedin,
     label: "LinkedIn",
-    value: "linkedin.com/in/robytanama",
+    value: "linkedin.com/in/tanamaroby",
     description: "Let's connect",
   },
   {
-    href: "https://github.com/robytanama",
+    href: "https://github.com/tanamaroby",
     icon: Github,
     label: "GitHub",
-    value: "github.com/robytanama",
+    value: "github.com/tanamaroby",
     description: "See my code",
   },
   {
-    href: "https://twitter.com/robytanama",
+    href: "https://x.com/SCourtest",
     icon: Twitter,
-    label: "Twitter",
-    value: "twitter.com/robytanama",
+    label: "Twitter / X",
+    value: "x.com/SCourtest",
     description: "Follow my thoughts",
   },
 ];
@@ -78,7 +78,7 @@ export default function Contact() {
             className="glow-primary gap-2 px-10 py-6 text-base font-semibold"
             asChild
           >
-            <a href="mailto:hello@robytanama.dev">
+            <a href="mailto:tanamaroby@gmail.com">
               <Mail size={18} />
               Say Hello
               <ArrowUpRight size={16} className="ml-1" />

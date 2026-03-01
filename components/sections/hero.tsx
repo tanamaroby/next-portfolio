@@ -6,14 +6,14 @@ import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, Mail, Twitter } from "lucide-react";
 
 const SOCIAL_LINKS = [
-  { href: "https://github.com/robytanama", icon: Github, label: "GitHub" },
+  { href: "https://github.com/tanamaroby", icon: Github, label: "GitHub" },
   {
-    href: "https://linkedin.com/in/robytanama",
+    href: "https://www.linkedin.com/in/tanamaroby/",
     icon: Linkedin,
     label: "LinkedIn",
   },
-  { href: "https://twitter.com/robytanama", icon: Twitter, label: "Twitter" },
-  { href: "mailto:hello@robytanama.dev", icon: Mail, label: "Email" },
+  { href: "https://x.com/SCourtest", icon: Twitter, label: "Twitter" },
+  { href: "mailto:tanamaroby@gmail.com", icon: Mail, label: "Email" },
 ];
 
 export default function Hero() {
@@ -79,7 +79,7 @@ export default function Hero() {
         <motion.div variants={fadeInUp} className="mb-6 inline-flex">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
-            Available for opportunities
+            Open to consulting &amp; opportunities
           </span>
         </motion.div>
 
@@ -97,7 +97,16 @@ export default function Hero() {
           variants={fadeInUp}
           className="mb-6 text-xl font-medium text-muted-foreground sm:text-2xl"
         >
-          Software Engineer
+          Co-Founder &amp; CTO @{" "}
+          <a
+            href="https://www.trietech.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            TrieTech
+          </a>{" "}
+          · Full-Stack Engineer
         </motion.p>
 
         {/* Description */}
@@ -105,12 +114,9 @@ export default function Hero() {
           variants={fadeInUp}
           className="mx-auto mb-10 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
         >
-          I build fast, accessible, and beautiful digital products. Passionate
-          about clean architecture, great developer experience, and impactful
-          software.{" "}
-          <span className="text-foreground/60 italic">
-            [More about me coming soon]
-          </span>
+          I build fast, accessible, and beautiful web experiences. As co-founder
+          of TrieTech, I help businesses grow through bespoke software solutions
+          — from architecture to final delivery.
         </motion.p>
 
         {/* CTA Buttons */}

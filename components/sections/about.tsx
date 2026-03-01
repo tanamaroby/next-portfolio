@@ -1,6 +1,6 @@
 "use client";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
 import {
@@ -11,10 +11,11 @@ import {
   viewportConfig,
 } from "@/lib/motion";
 import { motion } from "framer-motion";
+import { MapPin } from "lucide-react";
 
 const HIGHLIGHTS = [
-  { value: "5+", label: "Years Experience" },
-  { value: "30+", label: "Projects Shipped" },
+  { value: "6+", label: "Years Experience" },
+  { value: "20+", label: "Projects Shipped" },
   { value: "10+", label: "Happy Clients" },
   { value: "∞", label: "Bugs Fixed" },
 ];
@@ -51,6 +52,7 @@ export default function About() {
             {/* Glow ring */}
             <div className="absolute -inset-1 rounded-full bg-linear-to-br from-primary/40 via-primary/10 to-transparent blur-md" />
             <Avatar className="relative h-40 w-40 border-2 border-primary/30 text-4xl">
+              <AvatarImage src="/Roby.jpg" alt="Roby Tanama" />
               <AvatarFallback className="bg-muted text-3xl font-bold text-primary">
                 RT
               </AvatarFallback>
@@ -82,21 +84,34 @@ export default function About() {
           <h3 className="text-2xl font-semibold leading-snug">
             Hi there! I&apos;m Roby —{" "}
             <span className="text-gradient">
-              a software engineer based in [City, Country]
+              a software engineer based in Singapore
             </span>
           </h3>
 
+          <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <MapPin size={14} className="text-primary shrink-0" />
+            Bukit Merah, Singapore
+          </p>
+
           <p className="leading-relaxed text-muted-foreground">
-            [Placeholder — share your story here. Where did you grow up? When
-            did you start coding? What drives you?]
+            I&apos;m a dedicated software engineer and co-founder of{" "}
+            <a
+              href="https://www.trietech.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              TrieTech
+            </a>
+            , a forward-thinking software consulting company. An alumnus of the
+            National University of Singapore, my career has been driven by a
+            passion for technology and innovation.
           </p>
           <p className="leading-relaxed text-muted-foreground">
-            [Placeholder — your professional focus. What kind of problems do you
-            love solving? What technologies excite you?]
-          </p>
-          <p className="leading-relaxed text-muted-foreground">
-            [Placeholder — outside of work. Hobbies, interests, what you do when
-            you&apos;re not coding.]
+            At TrieTech, we specialize in crafting bespoke web applications,
+            focusing on delivering both excellence and efficiency. I&apos;m
+            committed to leveraging my expertise to provide top-tier software
+            solutions and fostering growth in the tech industry.
           </p>
 
           {/* Interests / quick facts */}
@@ -109,10 +124,11 @@ export default function About() {
           >
             {[
               "Full-Stack Dev",
-              "Open Source",
+              "SaaS Builder",
               "UI/UX Enthusiast",
-              "Coffee Lover ☕",
-              "[Add your interest]",
+              "Open Source",
+              "Entrepreneur",
+              "Team Lead",
             ].map((tag) => (
               <Badge
                 key={tag}
